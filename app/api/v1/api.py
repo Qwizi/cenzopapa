@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .endpoints import scrap, cenzo
+from app.api.v1.endpoints import scrap, cenzo
 
 api_router = APIRouter()
 api_router.include_router(scrap.router, tags=['scrap'])

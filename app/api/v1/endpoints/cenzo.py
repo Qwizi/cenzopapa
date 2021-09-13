@@ -1,15 +1,12 @@
 import datetime
 import random
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 from firebase_admin import firestore
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from typing import List, Optional
 
-from scrapp.site import get_last_image
-from firebase.firebase import db
+from app.scrapp.site import get_last_image
+from app.firebase.firebase import db
 
 router = APIRouter()
 

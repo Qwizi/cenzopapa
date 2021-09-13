@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import JSONResponse
-from scrapp.site_manager import site_manager
+from app.scrapp.site_manager import site_manager
 router = APIRouter()
 
 

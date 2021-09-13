@@ -1,6 +1,6 @@
 import requests
 
-from scrapp.site import Wykop
+from app.scrapp.site import Wykop
 
 
 class SiteManager:

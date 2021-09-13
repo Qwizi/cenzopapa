@@ -10,7 +10,7 @@ from abc import abstractmethod, ABC
 
 from firebase_admin import firestore
 
-from firebase.firebase import db, bucket
+from app.firebase.firebase import db, bucket
 
 
 def remove_image_from_temp(path):

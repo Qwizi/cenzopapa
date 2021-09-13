@@ -1,9 +1,9 @@
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
-from core.config import settings
+from app.core.config import settings
 
-cred = credentials.Certificate("../serviceAccountKey.json")
+cred = credentials.Certificate("./serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {'storageBucket': settings.FIREBASE_STORAGE_BUCKET})
 
 db = firestore.client()
