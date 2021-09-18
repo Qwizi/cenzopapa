@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
-from app.core import config
-from app.api.v1.api import api_router
+from .api.v1.scrap import scrap_router
+from .core import config
+
 
 def get_settings():
     return config.Settings()
@@ -19,7 +20,7 @@ def get_application():
         allow_headers=["*"],
     )
 
-    _app.include_router(api_router, prefix="/v1")
+    _app.include_router(scrap_router, prefix="/api/v1", tags=['scrap'])
 
     return _app
 
