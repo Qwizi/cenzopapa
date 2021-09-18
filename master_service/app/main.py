@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from .api.v1.webhook import  webhook_router
+from .api.v1.process_images import process_images_router
 from .core import config
 
 
@@ -20,7 +20,7 @@ def get_application():
         allow_headers=["*"],
     )
 
-    _app.include_router(webhook_router, prefix="/api/v1/webhook", tags=['scrap'])
+    _app.include_router(process_images_router, prefix="/api/v1/process_images", tags=['process_images'])
 
     return _app
 

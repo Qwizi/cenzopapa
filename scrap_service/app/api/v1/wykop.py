@@ -3,6 +3,7 @@ import datetime
 
 from bs4 import BeautifulSoup
 
+from .models import ImageModel
 from .site import Site
 
 
@@ -39,9 +40,11 @@ class Wykop(Site):
                 else:
                     if datetime_time < week_ago:
                         repeat = False
+
+                #image_model = ImageModel(remote_image_url=image['src'], created_at=datetime_time)
                 images_list.append({
-                    'remote_image_url': image['src'],
-                    'created_at': datetime_time
+                    "remote_image_url": image['src'],
+                    "created_at": datetime_time
                 })
             sleep(2)
         print(f"Ilosc cenzopap: {len(images_list)}")

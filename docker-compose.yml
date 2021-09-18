@@ -1,18 +1,20 @@
 version: '3.7'
 
 services:
-  webhook_service:
-    build: ./webhook_service
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-    volumes:
-      - ./webhook_service/:/app/
-    ports:
-      - 8001:8000
-
   scrap_service:
     build: ./scrap_service
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
       - ./scrap_service/:/app/
     ports:
-      - 8002:8000
+      - 8001:8000
+
+  master_service:
+    build: ./master_service
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./master_service/:/app/
+    ports:
+      - 8000:8000
+    depends_on:
+      - scrap_service
