@@ -1,33 +1,41 @@
-from time import sleep
+import logging
+from abc import ABC
 import datetime
+from time import sleep
 
 from bs4 import BeautifulSoup
 
-from .models import ImageModel
-from .site import Site
+from app.services.main import SiteMixin
+from app.utils.app_exceptions import AppException
+from app.utils.service_result import ServiceResult
 
+logger = logging.getLogger(__name__)
 
-class Wykop(Site):
-    site_name = "wykop"
-    site_url = "https://www.wykop.pl"
+class WykopScrapService(SiteMixin, ABC):
     cenzo_tag = "multimedia-tag/cenzopapa"
 
-    def scrap_images(self, initial_scrap=False):
+    def scrap(self, initial_scrap=False):
         page_number = 0
         repeat = True
         images_list = []
+
         while repeat:
             page_number += 1
-            response = self.session.get(f'{self.site_url}/{self.cenzo_tag}/strona/{page_number}')
-            print(response.status_code)
+            url = f'{self.site_url}/{self.cenzo_tag}/strona/{page_number}'
+            response = self.client.get(url)
+            logger.info(f"Zaczynam pobierac dane ze strony {url}")
             if response.status_code == 503:
                 repeat = False
+                logger.error("Wystąpil problem z zapytaniem")
 
             bs = BeautifulSoup(response.content, 'html.parser')
 
             rel_images = bs.find_all("div", class_="rel image")
             two_years_ago = datetime.datetime.now() - datetime.timedelta(days=2 * 365)
             week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+            if not rel_images:
+                logger.error("Nie znaleziono zdjec z papajem")
+
             for rel_image in rel_images:
                 image = rel_image.find("img")
                 time = rel_image.find("time")
@@ -40,13 +48,11 @@ class Wykop(Site):
                 else:
                     if datetime_time < week_ago:
                         repeat = False
-
-                #image_model = ImageModel(remote_image_url=image['src'], created_at=datetime_time)
+                logger.info(f"[cenzopapa] -> {image['src']} | {datetime_time}")
                 images_list.append({
                     "remote_image_url": image['src'],
                     "created_at": datetime_time
                 })
             sleep(2)
-        print(f"Ilosc cenzopap: {len(images_list)}")
+        logger.info(f"Ilosc cenzopap: {len(images_list)}")
 
-        return images_list
