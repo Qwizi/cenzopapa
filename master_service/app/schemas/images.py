@@ -1,7 +1,9 @@
+import uuid
 from datetime import datetime
-from typing import List
+from typing import List, Optional
+from uuid import UUID, uuid4
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Image(BaseModel):
@@ -11,3 +13,14 @@ class Image(BaseModel):
 
 class ImageList(BaseModel):
     images: List[Image]
+
+
+class ImageDBModel(Image):
+    id: int
+    filename: Optional[UUID] = Field(default_factory=uuid4)
+    extension: Optional[str] = None
+    public_url: str
+
+
+class ImageDBOut(BaseModel):
+    url: str

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from .routers.cenzo import cenzo_router
 from .routers.process_images import process_images_router
 from .core import config
 
@@ -20,3 +21,4 @@ app.add_middleware(
 )
 
 app.include_router(process_images_router, prefix="/api/v1/process_images", tags=['process_images'])
+app.include_router(cenzo_router, prefix="/api/v1/cenzo", tags=['cenzo'])
