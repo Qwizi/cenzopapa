@@ -1,15 +1,15 @@
+import datetime
 import logging
 from abc import ABC
-import datetime
 from time import sleep
 
 from bs4 import BeautifulSoup
 
+from app.schemas.images import Image
 from app.services.main import SiteMixin
-from app.utils.app_exceptions import AppException
-from app.utils.service_result import ServiceResult
 
 logger = logging.getLogger(__name__)
+
 
 class WykopScrapService(SiteMixin, ABC):
     cenzo_tag = "multimedia-tag/cenzopapa"
@@ -49,10 +49,13 @@ class WykopScrapService(SiteMixin, ABC):
                     if datetime_time < week_ago:
                         repeat = False
                 logger.info(f"[cenzopapa] -> {image['src']} | {datetime_time}")
+                image = Image(remote_image_url=image['src'], created_at=datetime_time)
+                images_list.append(image)
+                """"
                 images_list.append({
                     "remote_image_url": image['src'],
                     "created_at": datetime_time
                 })
+                """
             sleep(2)
-        logger.info(f"Ilosc cenzopap: {len(images_list)}")
-
+        return images_list
