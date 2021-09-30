@@ -8,3 +8,4 @@ ormar[postgresql]
 psycopg2-binary
 asyncpg
 alembic
+pillow

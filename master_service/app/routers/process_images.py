@@ -7,6 +7,7 @@ from app.schemas.images import ImageList
 from ..core.db import Image
 
 from ..services.main import FireStoreService, FireStorageService
+from ..services.watermark import WatermarkService
 from ..utils.firebase import db, bucket
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,8 @@ async def process(images_list):
     for image in images_list.images:
         image_exists = await Image.objects.filter(remote_image_url=image.remote_image_url).exists()
         if not image_exists:
-            firestorage_service = FireStorageService(bucket)
+            watermark_service = WatermarkService()
+            firestorage_service = FireStorageService(bucket, watermark_service)
             filename, extension, public_url = firestorage_service.upload(image)
             if filename and extension and public_url:
                 new_image = await Image.objects.create(

@@ -6,6 +6,7 @@ import httpx
 from firebase_admin import firestore
 
 from app.schemas.images import Image
+from .watermark import WatermarkService
 from ..schemas.images import ImageDBModel
 from urllib.parse import urlparse
 
@@ -62,6 +63,9 @@ class FireStoreService(FireStoreMixin):
 
 
 class FireStorageService(FireStorageMixin):
+    def __init__(self, bucket, watermark_service: WatermarkService):
+        super().__init__(bucket)
+        self.watermark_service = watermark_service
 
     @staticmethod
     def get_filename_extension(url):
@@ -99,6 +103,7 @@ class FireStorageService(FireStorageMixin):
             if image and image.remote_image_url != "":
                 path = self.download(image)
                 filename, extension, full_filename = self.get_filename_extension(image.remote_image_url)
+                self.watermark_service.add_watermark(path)
                 blob = self.bucket.blob(full_filename)
                 blob.upload_from_filename(path)
                 blob.make_public()
