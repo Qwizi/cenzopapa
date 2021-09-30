@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
 
+from .services.watermark import WatermarkService
 from .utils.request_exceptions import http_exception_handler
 from .utils.request_exceptions import request_validation_exception_handler
 from .core import config
