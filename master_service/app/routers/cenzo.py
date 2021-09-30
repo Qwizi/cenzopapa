@@ -4,7 +4,8 @@ from typing import List
 from fastapi import APIRouter
 from firebase_admin import firestore
 
-from ..schemas.images import ImageDBModel, ImageDBOut
+from ..core.db import Image
+from ..schemas.images import ImageDBModel, ImageDBOut, ImageStats
 from ..services.main import FireStoreService
 from ..utils.firebase import db
 
@@ -12,24 +13,24 @@ cenzo_router = APIRouter()
 
 
 @cenzo_router.get("/", response_model=list[ImageDBOut])
-def cenzo_last_10_images():
-    firestore_service = FireStoreService(db)
-    query = db.collection('images').order_by(u"id", direction=firestore.Query.DESCENDING).limit(10).stream()
-    images = []
-    for r in query:
-        result = r.to_dict()
-        image = ImageDBOut(url=result["public_url"])
-        images.append(image)
-    return images
+async def cenzo_last_10_images():
+    images = await Image.objects.order_by("-id").limit(10).all()
+    images_list = []
+    for i in images:
+        image = ImageDBOut(url=i.public_url)
+        images_list.append(image)
+    return images_list
 
 @cenzo_router.get("/random", response_model=ImageDBOut)
-def cenzo_random():
-    firestore_service = FireStoreService(db)
-    last_cenzo = firestore_service.get_last("images")
-    random_id = random.randint(1, last_cenzo['id'])
-    query = db.collection(u'images').where(u'id', u'==', random_id).limit(1).stream()
-    image = None
-    for r in query:
-        result = r.to_dict()
-        image = ImageDBOut(url=result["public_url"])
+async def cenzo_random():
+    last_image = await Image.objects.get()
+    random_id = random.randint(1, last_image.id)
+    random_image = await Image.objects.get(id=random_id)
+    image = ImageDBOut(url=random_image.public_url)
     return image
+
+
+@cenzo_router.get("/stats")
+async def cenzo_stats():
+    cenzo_count = await Image.objects.count()
+    return ImageStats(count=cenzo_count)

@@ -1,7 +1,6 @@
+import logging
 import os
-import time
 import uuid
-from abc import abstractmethod
 
 import httpx
 from firebase_admin import firestore
@@ -9,6 +8,8 @@ from firebase_admin import firestore
 from app.schemas.images import Image
 from ..schemas.images import ImageDBModel
 from urllib.parse import urlparse
+
+logger = logging.getLogger(__name__)
 
 
 class FireStoreMixin:
@@ -76,21 +77,35 @@ class FireStorageService(FireStorageMixin):
             os.remove(path)
 
     def download(self, image: Image):
-        response = httpx.get(image.remote_image_url)
-        if response.status_code == 200:
-            filename, extension, full_filename = self.get_filename_extension(image.remote_image_url)
-            path = f"app/temp/{full_filename}"
-            file = open(path, "wb")
-            file.write(response.content)
-            file.close()
-            return path
+        try:
+            response = httpx.get(image.remote_image_url)
+            response.raise_for_status()
+            if response.status_code != 200:
+                logger.error("Error response status code")
+            else:
+                filename, extension, full_filename = self.get_filename_extension(image.remote_image_url)
+                path = f"app/temp/{full_filename}"
+                file = open(path, "wb")
+                file.write(response.content)
+                file.close()
+                return path
+        except httpx.RequestError as exc:
+            logger.error(f"An error occurred while requesting {exc.request.url!r}.")
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"Error response {exc.response.status_code} while requesting {exc.request.url!r}.")
 
     def upload(self, image: Image):
-        path = self.download(image)
-        filename, extension, full_filename = self.get_filename_extension(image.remote_image_url)
-        blob = self.bucket.blob(full_filename)
-        blob.upload_from_filename(path)
-        blob.make_public()
-        self.remove_file_from_temp(path)
-        return filename, extension, blob.public_url
+        try:
+            if image and image.remote_image_url != "":
+                path = self.download(image)
+                filename, extension, full_filename = self.get_filename_extension(image.remote_image_url)
+                blob = self.bucket.blob(full_filename)
+                blob.upload_from_filename(path)
+                blob.make_public()
+                self.remove_file_from_temp(path)
+                if filename and extension and blob.public_url:
+                    return filename, extension, blob.public_url
+                return None, None, None
+        except Exception as exc:
+            logger.error(exc)
 

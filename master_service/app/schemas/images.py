@@ -24,3 +24,6 @@ class ImageDBModel(Image):
 
 class ImageDBOut(BaseModel):
     url: str
+
+class ImageStats(BaseModel):
+    count: int
