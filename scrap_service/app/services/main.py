@@ -34,20 +34,6 @@ class SiteMixin(HttpxClientMixin, abc.ABC):
     def send_images_to_process(self, initial_scrap=False):
         try:
             logger.info(f"Pobieranie danych rozpoczete")
-            images = self.scrap(initial_scrap)
-            images_list = ImageList(images=images)
-            images_list_json = images_list.dict()
-            images_list_json_data = jsonable_encoder(images_list_json)
-
-            logger.info(f"Json: {images_list}")
-            logger.info(f"Ilosc zdjec: {len(images)}")
-
-            callback_response = send_to_master(images_list_json_data)
-            logger.info(f"Wynik zapytania do callbacka -> {callback_response.status_code}")
-
-            if callback_response.status_code != 200:
-                logger.error("Nie udalo się przeslac zdjec")
-            else:
-                logger.info(f"Przesłano {len(images)}")
+            self.scrap(initial_scrap)
         except Exception as e:
             logger.error(e)

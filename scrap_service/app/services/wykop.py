@@ -4,9 +4,10 @@ from abc import ABC
 from time import sleep
 
 from bs4 import BeautifulSoup
+from fastapi.encoders import jsonable_encoder
 
-from app.schemas.images import Image
-from app.services.main import SiteMixin
+from app.schemas.images import Image, ImageList
+from app.services.main import SiteMixin, send_to_master
 
 logger = logging.getLogger(__name__)
 
@@ -58,4 +59,16 @@ class WykopScrapService(SiteMixin, ABC):
                 })
                 """
             sleep(2)
+            images_list_ = ImageList(images=images_list)
+            images_list_json = images_list_.dict()
+            images_list_json_data = jsonable_encoder(images_list_json)
+            logger.info(f"Ilosc zdjec: {len(images_list)}")
+
+            callback_response = send_to_master(images_list_json_data)
+            logger.info(f"Wynik zapytania do callbacka -> {callback_response.status_code}")
+
+            if callback_response.status_code != 200:
+                logger.error("Nie udalo się przeslac zdjec")
+            else:
+                logger.info(f"Przesłano {len(images_list)}")
         return images_list

@@ -7,14 +7,28 @@ services:
     volumes:
       - ./scrap_service/:/app/
     ports:
-      - 8001:8000
+      - 8501:8000
 
   master_service:
     build: ./master_service
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --reload --host 0.0.0.0 --port 8000'
     volumes:
       - ./master_service/:/app/
     ports:
-      - 8000:8000
+      - 8500:8000
     depends_on:
       - scrap_service
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=cenzopapa
+      - POSTGRES_PASSWORD=cenzopapa
+      - POSTGRES_DB=cenzopapa
+    expose:
+      - 5432
+
+volumes:
+  postgres_data:

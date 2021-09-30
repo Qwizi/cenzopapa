@@ -7,6 +7,11 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     FIREBASE_STORAGE_BUCKET: str
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    DATABASE_HOST: str
+    DATABASE_USER: str
+    DATABASE_PASS: str
+    DATABASE_DB: str
+
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
@@ -23,3 +28,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+def get_settings():
+    return Settings()

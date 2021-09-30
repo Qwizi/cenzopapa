@@ -1,24 +1,32 @@
+import logging
+
 from fastapi import APIRouter
 from starlette.background import BackgroundTasks
 
 from app.schemas.images import ImageList
+from ..core.db import Image
 
 from ..services.main import FireStoreService, FireStorageService
 from ..utils.firebase import db, bucket
 
+logger = logging.getLogger(__name__)
 process_images_router = APIRouter()
 
 
-def process(images_list):
+async def process(images_list):
     for image in images_list.images:
-        firestore_service = FireStoreService(db)
-        image_exists = firestore_service.exists("images", "remote_image_url", "==",
-                                                image.remote_image_url)
+        image_exists = await Image.objects.filter(remote_image_url=image.remote_image_url).exists()
         if not image_exists:
             firestorage_service = FireStorageService(bucket)
             filename, extension, public_url = firestorage_service.upload(image)
-            new_image = firestore_service.add("images", image, filename, extension, public_url)
-            print(new_image)
+            if filename and extension and public_url:
+                new_image = await Image.objects.create(
+                    filename=filename,
+                    extension=extension,
+                    public_url=public_url,
+                    remote_image_url=image.remote_image_url
+                )
+                logger.info(new_image)
 
 
 @process_images_router.post("/")

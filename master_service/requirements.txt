@@ -4,3 +4,7 @@ httpx
 python-dotenv
 pydantic
 firebase_admin
+ormar[postgresql]
+psycopg2-binary
+asyncpg
+alembic
