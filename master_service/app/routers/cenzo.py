@@ -1,13 +1,9 @@
 import random
-from typing import List
 
 from fastapi import APIRouter
-from firebase_admin import firestore
 
 from ..core.db import Image
-from ..schemas.images import ImageDBModel, ImageDBOut, ImageStats
-from ..services.main import FireStoreService
-from ..utils.firebase import db
+from ..schemas.images import ImageDBOut, ImageStats
 
 cenzo_router = APIRouter()
 
