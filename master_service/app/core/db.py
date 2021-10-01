@@ -21,9 +21,9 @@ class Image(ormar.Model):
         tablename = "images"
 
     id: int = ormar.Integer(primary_key=True)
-    filename: UUID = ormar.UUID(nullable=False)
-    extension: str = ormar.String(max_length=255)
-    remote_image_url: str = ormar.String(max_length=255)
+    filename: UUID = ormar.UUID(nullable=True)
+    extension: str = ormar.String(max_length=255, nullable=True)
+    remote_image_url: str = ormar.String(max_length=255, nullable=True)
     public_url: str = ormar.String(max_length=255, nullable=True)
 
 

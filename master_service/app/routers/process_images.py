@@ -6,7 +6,8 @@ from starlette.background import BackgroundTasks
 from app.schemas.images import ImageList
 from ..core.db import Image
 
-from ..services.main import FireStoreService, FireStorageService
+from ..services.main import  FireStorageService
+from ..services.process_images import ProcessImageService
 from ..services.watermark import WatermarkService
 from ..utils.firebase import db, bucket
 
@@ -33,6 +34,9 @@ async def process(images_list):
 
 @process_images_router.post("/")
 async def process_images(images_list: ImageList, background_tasks: BackgroundTasks):
-    background_tasks.add_task(process, images_list)
+    watermark_service = WatermarkService()
+    firestorage_service = FireStorageService(bucket, watermark_service)
+    process_image_service = ProcessImageService(firestorage_service)
+    background_tasks.add_task(process_image_service.process, images_list)
 
     return None

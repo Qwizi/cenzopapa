@@ -10,11 +10,12 @@ from .utils.request_exceptions import http_exception_handler
 from .utils.request_exceptions import request_validation_exception_handler
 from .core import config
 from .core.db import database
-from .routers.cenzo import cenzo_router
+from .routers.image import images_router
 from .routers.process_images import process_images_router
 from .utils.app_exceptions import app_exception_handler, AppExceptionCase
 
-logging.config.fileConfig('logger.conf', disable_existing_loggers=False)
+logging.config.fileConfig('./logger.ini', disable_existing_loggers=False)
+
 
 def get_settings():
     return config.Settings()
@@ -33,8 +34,6 @@ app.add_middleware(
 app.state.database = database
 
 
-
-
 @app.on_event("startup")
 async def startup() -> None:
     database_ = app.state.database
@@ -42,12 +41,12 @@ async def startup() -> None:
         await database_.connect()
 
 
-
 @app.on_event("shutdown")
 async def shutdown() -> None:
     database_ = app.state.database
     if database_.is_connected:
         await database_.disconnect()
+
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request, e):
@@ -63,5 +62,6 @@ async def custom_validation_exception_handler(request, e):
 async def custom_app_exception_handler(request, e):
     return await app_exception_handler(request, e)
 
+
 app.include_router(process_images_router, prefix="/api/v1/process_images", tags=['process_images'])
-app.include_router(cenzo_router, prefix="/api/v1/cenzo", tags=['cenzo'])
+app.include_router(images_router, prefix="/api/v1/cenzo", tags=['cenzo'])

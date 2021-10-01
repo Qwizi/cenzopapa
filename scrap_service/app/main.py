@@ -9,7 +9,7 @@ from .routers.scrap import scrap_router
 from .utils.app_exceptions import AppExceptionCase, app_exception_handler
 from .utils.request_exceptions import request_validation_exception_handler, http_exception_handler
 
-logging.config.fileConfig('logger.conf', disable_existing_loggers=False)
+logging.config.fileConfig('logger.ini', disable_existing_loggers=False)
 
 def get_settings():
     return config.Settings()

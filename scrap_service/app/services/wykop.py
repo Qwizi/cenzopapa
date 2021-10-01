@@ -18,9 +18,8 @@ class WykopScrapService(SiteMixin, ABC):
     def scrap(self, initial_scrap=False):
         page_number = 0
         repeat = True
-        images_list = []
-
         while repeat:
+            images_list = []
             page_number += 1
             url = f'{self.site_url}/{self.cenzo_tag}/strona/{page_number}'
             response = self.client.get(url)
@@ -71,4 +70,3 @@ class WykopScrapService(SiteMixin, ABC):
                 logger.error("Nie udalo się przeslac zdjec")
             else:
                 logger.info(f"Przesłano {len(images_list)}")
-        return images_list
