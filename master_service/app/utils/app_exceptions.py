@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse
 
 
 class AppExceptionCase(Exception):
-    def __init__(self, status_code: int, context: dict):
+    def __init__(self, status_code: int, context: str):
         self.exception_case = self.__class__.__name__
         self.status_code = status_code
         self.context = context
@@ -23,7 +23,7 @@ async def app_exception_handler(request: Request, exc: AppExceptionCase):
 
 
 class AppException:
-    class ScrapFailed(AppExceptionCase):
+    class ImageError(AppExceptionCase):
         def __init__(self, context: dict = None):
             """
             Scrap failed
