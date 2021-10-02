@@ -9,3 +9,5 @@ psycopg2-binary
 asyncpg
 alembic
 pillow
+fastapi-pagination[ormar]
+fastapi-utils

@@ -1,11 +1,13 @@
 import logging
 
+import httpx
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi_pagination import add_pagination
+from fastapi_utils.tasks import repeat_every
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
 
-from .services.watermark import WatermarkService
 from .utils.request_exceptions import http_exception_handler
 from .utils.request_exceptions import request_validation_exception_handler
 from .core import config
@@ -41,6 +43,14 @@ async def startup() -> None:
         await database_.connect()
 
 
+@app.on_event("startup")
+@repeat_every(seconds=36000, raise_exceptions=True, logger=logging.getLogger(__name__))
+async def scrap_sites():
+    async with httpx.AsyncClient() as client:
+        await client.post("http://scrap_service:8000/api/v1/scrap/")
+
+
+
 @app.on_event("shutdown")
 async def shutdown() -> None:
     database_ = app.state.database
@@ -64,4 +74,6 @@ async def custom_app_exception_handler(request, e):
 
 
 app.include_router(process_images_router, prefix="/api/v1/process_images", tags=['process_images'])
-app.include_router(images_router, prefix="/api/v1/cenzo", tags=['cenzo'])
+app.include_router(images_router, prefix="/images", tags=['images'])
+
+add_pagination(app)

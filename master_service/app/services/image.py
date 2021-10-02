@@ -2,6 +2,7 @@ import logging
 import sys
 from random import randint
 
+from fastapi_pagination import paginate
 from ormar import NoMatch
 
 from ..schemas.images import ImageDBOut, ImageStats
@@ -15,25 +16,25 @@ logger = logging.getLogger(__name__)
 class ImageService:
     @staticmethod
     async def get_last_10_images():
-        images = await Image.objects.order_by("-id").limit(10).fields(["public_url"]).all()
+        images = await Image.objects.order_by("-id").fields(["public_url"]).all()
         images_list = []
         for i in images:
             image = ImageDBOut(url=i.public_url)
             images_list.append(image)
         if not images:
-            return ServiceResult(AppException.AppError("Images list is empty"))
+            return ServiceResult(AppException.ImageError("Images list is empty"))
         if not images_list:
-            return ServiceResult(AppException.AppError("ImagesDBOut list is empty"))
-        return ServiceResult(images_list)
+            return ServiceResult(AppException.ImageError("ImagesDBOut list is empty"))
+        paginated_images = paginate(images)
+        return ServiceResult(paginated_images)
 
     @staticmethod
     async def get_random_image():
         try:
             last_image = await Image.objects.get()
             random_id = randint(1, last_image.id)
-            random_image = await Image.objects.get(id=random_id)
-            image = ImageDBOut(url=random_image.public_url)
-            return ServiceResult(image)
+            random_image = await Image.objects.fields(['public_url']).get(id=random_id)
+            return ServiceResult(random_image)
         except NoMatch:
             logger.error("Image not found")
             return ServiceResult(AppException.ImageError("Image not found"))
