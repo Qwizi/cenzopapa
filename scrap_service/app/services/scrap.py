@@ -1,8 +1,8 @@
 from starlette.background import BackgroundTasks
 
-from app.services.main import SiteMixin
-from app.utils.app_exceptions import AppException
-from app.utils.service_result import ServiceResult
+from ..services.main import SiteMixin
+from ..utils.app_exceptions import AppException
+from ..utils.service_result import ServiceResult
 
 
 class ScrapService:

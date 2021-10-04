@@ -42,12 +42,14 @@ async def startup() -> None:
     if not database_.is_connected:
         await database_.connect()
 
+"""
 
 @app.on_event("startup")
 @repeat_every(seconds=3600, raise_exceptions=True, logger=logging.getLogger(__name__))
 async def scrap_sites():
     async with httpx.AsyncClient() as client:
-        await client.post("http://scrap_service:8000/api/v1/scrap/")
+        await client.post("http://scrap_service:8001/scrap/")
+"""
 
 
 
@@ -73,7 +75,7 @@ async def custom_app_exception_handler(request, e):
     return await app_exception_handler(request, e)
 
 
-app.include_router(process_images_router, prefix="/api/v1/process_images", tags=['process_images'])
+app.include_router(process_images_router, prefix="/process_images", tags=['process_images'])
 app.include_router(images_router, prefix="/images", tags=['images'])
 
 add_pagination(app)

@@ -6,8 +6,8 @@ from time import sleep
 from bs4 import BeautifulSoup
 from fastapi.encoders import jsonable_encoder
 
-from app.schemas.images import Image, ImageList
-from app.services.main import SiteMixin, send_to_master
+from ..schemas.images import Image, ImageList
+from ..services.main import SiteMixin, send_to_master
 
 logger = logging.getLogger(__name__)
 
