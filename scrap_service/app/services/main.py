@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_to_master(data):
-    return httpx.post(f"http://master_service:8000/api/v1/process_images/", json=data,
+    return httpx.post(f"http://master_service:8000/process_images/", json=data,
                       headers={"Content-Type": "application/json; charset=utf-8"})
 
 

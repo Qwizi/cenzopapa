@@ -41,4 +41,4 @@ async def custom_app_exception_handler(request, e):
     return await app_exception_handler(request, e)
 
 
-app.include_router(scrap_router, prefix="/api/v1", tags=['scrap'])
+app.include_router(scrap_router, prefix="/scrap", tags=['scrap'])
