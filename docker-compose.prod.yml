@@ -1,26 +1,34 @@
 version: '3.7'
 
 services:
-  master_service:
-    build:
-      context: ./master_service
-      dockerfile: Dockerfile.prod
-    ports:
-      - 8500:80
-    depends_on:
-      - scrap_service
-      - db
-    networks:
-      - front_default
   scrap_service:
-    build: ./scrap_service
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-    volumes:
-      - ./scrap_service/:/app/
+    build:
+      context: ./scrap_service
+      dockerfile: Dockerfile.prod
     ports:
       - 8501:8000
     networks:
       - front_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.scrap_service.rule=Host(`scrap.jebzpapy.localhost`)"
+      - "traefik.http.routers.scrap_service.entrypoints=web"
+
+  master_service:
+    build:
+      context: ./master_service
+      dockerfile: Dockerfile.prod
+    expose: # new
+      - 80
+    depends_on:
+      - db
+    networks:
+      - front_default
+    labels: # new
+      - "traefik.enable=true"
+      - "traefik.http.routers.master_service.rule=Host(`api.jebzpapy.tk`)"
+      - "traefik.http.routers.master_service.tls=true"
+      - "traefik.http.routers.master_service.tls.certresolver=letsencrypt"
 
   db:
     image: postgres:13-alpine
@@ -34,6 +42,25 @@ services:
       - 5432
     networks:
       - front_default
+
+  traefik: # new
+    build:
+      context: .
+      dockerfile: Dockerfile.traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik-public-certificates:/certificates"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.jebzpapy.tk`) && (PathPrefix(`/`))"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$hx83eoaq$$0NkEppUWewNWFxiQ0vE/r0"
 
 networks:
   front_default:
