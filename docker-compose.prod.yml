@@ -1,10 +1,8 @@
-version: '3.7'
+version: '3.3'
 
 services:
   scrap_service:
-    build:
-      context: ./scrap_service
-      dockerfile: Dockerfile.prod
+    build: /scrap_service
     ports:
       - 8501:8000
     networks:
@@ -15,9 +13,7 @@ services:
       - "traefik.http.routers.scrap_service.entrypoints=web"
 
   master_service:
-    build:
-      context: ./master_service
-      dockerfile: Dockerfile.prod
+    build: ./master_service
     expose: # new
       - 80
     depends_on:
