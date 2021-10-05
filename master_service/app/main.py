@@ -25,6 +25,7 @@ def get_settings():
 
 app = FastAPI(title=get_settings().PROJECT_NAME)
 
+"""
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[str(origin) for origin in get_settings().BACKEND_CORS_ORIGINS],
@@ -32,6 +33,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+"""
+
 
 app.state.database = database
 
