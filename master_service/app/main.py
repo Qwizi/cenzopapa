@@ -47,7 +47,7 @@ async def startup() -> None:
 @repeat_every(seconds=3600, raise_exceptions=True, logger=logging.getLogger(__name__))
 async def scrap_sites():
     async with httpx.AsyncClient() as client:
-        await client.post("http://scrap_service:8500/scrap/")
+        await client.post("http://192.168.1.102:8501/scrap/")
 
 
 

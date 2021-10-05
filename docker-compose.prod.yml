@@ -17,7 +17,7 @@ services:
     build: ./master_service
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --log-config logger.ini --reload --host 0.0.0.0'
     expose: # new
-      - 80
+      - 8000
     depends_on:
       - db
     networks:
@@ -48,6 +48,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - front_default
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
@@ -58,7 +60,7 @@ services:
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$hx83eoaq$$0NkEppUWewNWFxiQ0vE/r0"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$apr1$3zmpgibf$LXodktr0JOkTSNAWCZKlw1"
 
 networks:
   front_default:
