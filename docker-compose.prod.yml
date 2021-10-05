@@ -3,6 +3,7 @@ version: '3.3'
 services:
   scrap_service:
     build: /scrap_service
+    command: uvicorn app.main:app --reload --host 0.0.0.0
     ports:
       - 8501:8000
     networks:
@@ -14,6 +15,7 @@ services:
 
   master_service:
     build: ./master_service
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --log-config logger.ini --reload --host 0.0.0.0'
     expose: # new
       - 80
     depends_on:

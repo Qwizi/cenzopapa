@@ -1,14 +1,12 @@
 import logging
 import os
 import uuid
+from urllib.parse import urlparse
 
 import httpx
-from firebase_admin import firestore
 
 from app.schemas.images import Image
 from .watermark import WatermarkService
-from ..schemas.images import ImageDBModel
-from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 

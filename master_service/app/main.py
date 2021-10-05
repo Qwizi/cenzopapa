@@ -42,14 +42,13 @@ async def startup() -> None:
     if not database_.is_connected:
         await database_.connect()
 
-"""
 
 @app.on_event("startup")
 @repeat_every(seconds=3600, raise_exceptions=True, logger=logging.getLogger(__name__))
 async def scrap_sites():
     async with httpx.AsyncClient() as client:
-        await client.post("http://scrap_service:8001/scrap/")
-"""
+        await client.post("http://scrap_service:8500/scrap/")
+
 
 
 
