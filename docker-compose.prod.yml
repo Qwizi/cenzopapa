@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   scrap_service:
-    build: /scrap_service
+    build: ./scrap_service
     command: uvicorn app.main:app --reload --host 0.0.0.0
     ports:
       - 8501:8000
