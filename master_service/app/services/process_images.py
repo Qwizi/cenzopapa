@@ -18,7 +18,8 @@ class ProcessImageService(FireStorageMixin):
                             filename=filename,
                             extension=extension,
                             public_url=public_url,
-                            remote_image_url=image.remote_image_url
+                            remote_image_url=image.remote_image_url,
+                            created_at=image.created_at
                         )
                         logger.info(new_image)
 

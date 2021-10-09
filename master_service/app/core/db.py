@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 import databases
@@ -25,6 +26,7 @@ class Image(ormar.Model):
     extension: str = ormar.String(max_length=255, nullable=True)
     remote_image_url: str = ormar.String(max_length=255, nullable=True)
     public_url: str = ormar.String(max_length=255, nullable=True)
+    created_at: datetime = ormar.DateTime(default=datetime.now)
 
 
 engine = sqlalchemy.create_engine(

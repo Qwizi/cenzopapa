@@ -27,6 +27,19 @@ services:
       - "traefik.http.routers.master_service.rule=Host(`api.jebzpapy.tk`)"
       - "traefik.http.routers.master_service.tls=true"
       - "traefik.http.routers.master_service.tls.certresolver=letsencrypt"
+  ui:
+    build:
+      dockerfile: Dockerfile
+      context: ./ui
+    expose:
+      - 3000
+    networks:
+      - front_default
+    labels: # new
+      - "traefik.enable=true"
+      - "traefik.http.routers.master_service.rule=Host(`jebzpapy.tk`)"
+      - "traefik.http.routers.master_service.tls=true"
+      - "traefik.http.routers.master_service.tls.certresolver=letsencrypt"
 
   db:
     image: postgres:13-alpine

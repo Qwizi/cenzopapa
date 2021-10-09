@@ -51,12 +51,6 @@ class WykopScrapService(SiteMixin, ABC):
                 logger.info(f"[cenzopapa] -> {image['src']} | {datetime_time}")
                 image = Image(remote_image_url=image['src'], created_at=datetime_time)
                 images_list.append(image)
-                """"
-                images_list.append({
-                    "remote_image_url": image['src'],
-                    "created_at": datetime_time
-                })
-                """
             sleep(2)
             images_list_ = ImageList(images=images_list)
             images_list_json = images_list_.dict()

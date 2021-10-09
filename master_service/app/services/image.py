@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class ImageService:
     @staticmethod
     async def get_last_10_images():
-        images = await Image.objects.order_by("-id").fields(["public_url"]).all()
+        images = await Image.objects.order_by(Image.created_at.desc()).fields(["public_url"]).all()
         images_list = []
         for i in images:
             image = ImageDBOut(url=i.public_url)
