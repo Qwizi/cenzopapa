@@ -8,14 +8,14 @@ const Navbar = () => {
 	return (
 		<AppBar position="static" elevation={1}>
 			<Toolbar>
-				<Link href={"/"}>
+				<Link href={"/"} passHref>
 					<Image src={Logo} alt={"Jebzpapy"} width={150} height={50}/>
 				</Link>
 				<Container maxWidth="md">
-					<Link href={"/wylosuj-cenzo"}>
+					<Link href={"/wylosuj-cenzo"} passHref>
 						<Button>Wylosuj cenzo</Button>
 					</Link>
-					<Link href={"/api"}>
+					<Link href={"/api"} passHref>
 						<Button>API</Button>
 					</Link>
 				</Container>

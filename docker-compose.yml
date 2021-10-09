@@ -62,7 +62,7 @@ services:
       - front_default
 
   traefik:
-    image: traefik:v2.2
+    image: traefik:latest
     ports:
       - "8008:80"
       - "8080:8080"

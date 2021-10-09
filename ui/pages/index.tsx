@@ -3,10 +3,11 @@ import React, { useState} from "react";
 import {CenzoListPage} from '../components';
 
 
+type Props = {
+	api_url: string
+}
 
-
-// @ts-ignore
-const Home: NextPage = ({api_url}) =>
+const Home: NextPage<Props> = ({api_url}) =>
 {
 	const [pageIndex, setPageIndex] = useState(1);
 	return (

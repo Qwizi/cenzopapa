@@ -25,9 +25,6 @@ def get_settings():
 
 app = FastAPI(title=get_settings().PROJECT_NAME)
 
-"""
-
-"""
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
