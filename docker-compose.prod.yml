@@ -37,9 +37,9 @@ services:
       - front_default
     labels: # new
       - "traefik.enable=true"
-      - "traefik.http.routers.master_service.rule=Host(`jebzpapy.tk`)"
-      - "traefik.http.routers.master_service.tls=true"
-      - "traefik.http.routers.master_service.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ui.rule=Host(`jebzpapy.tk`)"
+      - "traefik.http.routers.ui.tls=true"
+      - "traefik.http.routers.ui.tls.certresolver=letsencrypt"
 
   db:
     image: postgres:13-alpine
