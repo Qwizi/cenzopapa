@@ -32,22 +32,6 @@ services:
       - "traefik.http.routers.master_service.rule=Host(`api.jebzpapy.localhost`)"
       - "traefik.http.routers.master_service.entrypoints=web"
 
-  ui:
-    build:
-      dockerfile: Dockerfile
-      context: ./ui
-    volumes:
-      - ./ui/:/app/
-      - ./ui/node_modules:/app/node_modules/
-    ports:
-      - 3000:3000
-    networks:
-      - front_default
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ui.rule=Host(`front.jebzpapy.localhost`)"
-      - "traefik.http.routers.ui.entrypoints=web"
-
   db:
     image: postgres:13-alpine
     volumes:
