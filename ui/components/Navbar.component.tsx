@@ -12,7 +12,7 @@ const Navbar = () => {
 					<Image src={Logo} alt={"Jebzpapy"} width={150} height={50}/>
 				</Link>
 				<Container maxWidth="md">
-					<Link href={"/wylosuj-cenzo"} passHref>
+					<Link href={"/random"} passHref>
 						<Button>Wylosuj cenzo</Button>
 					</Link>
 					<Link href={"/api"} passHref>

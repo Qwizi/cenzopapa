@@ -1,5 +1,6 @@
 import {Box, Paper} from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -10,12 +11,14 @@ const CenzoBox: React.FunctionComponent<Props> = ({public_url}) => {
 	return (
 		<Box mt={1} mb={5} style={{textAlign: "center"}}>
 			<Paper style={{padding: "15px"}} elevation={1}>
-				<Image
-					src={public_url ?? "/logo.png"}
-					width={600}
-					height={400}
-					alt={"Cenzopapa"}
-				/>
+				<Link href={public_url} passHref={false}>
+					<Image
+						src={public_url ?? "/logo.png"}
+						width={600}
+						height={400}
+						alt={"Cenzopapa"}
+					/>
+				</Link>
 			</Paper>
 		</Box>
 	)
