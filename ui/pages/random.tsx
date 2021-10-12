@@ -8,16 +8,13 @@ import {Image} from "../utils/typed";
 import Error from "next/error";
 
 type Props = {
-	image: Image | null,
+	image: Image,
 	error: string | null
 }
 
 const RandomCenzo: NextPage<Props> = ({image}) => {
 	const router = useRouter()
 	const refreshData = () => router.replace(router.asPath);
-
-	if (!image) return <Error statusCode={500}>Wystapil problem</Error>
-
 	return (
 		<div>
 			<CenzoBox public_url={image.public_url}/>
@@ -38,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		const data = await response.data;
 		return {
 			props: {
-				image_data: data,
+				image: data,
 				error: null,
 			}
 		}
@@ -46,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 		return {
 			props: {
-				image_data: null,
+				image: null,
 				error: e.message,
 			},
 		}

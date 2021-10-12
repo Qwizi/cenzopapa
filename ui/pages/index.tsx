@@ -6,7 +6,7 @@ import {Image, ImagesData} from "../utils/typed";
 
 
 type Props = {
-	images_data: ImagesData | null,
+	images_data: ImagesData,
 	error: string | null,
 	page: number
 }

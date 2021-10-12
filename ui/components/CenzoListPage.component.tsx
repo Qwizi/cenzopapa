@@ -13,7 +13,6 @@ type Props = {
 }
 
 const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, page, pageIndex, setPageIndex}) => {
-	if (error) return <Error error_code={500} title={"Server error"} message={`Failed fetch`}/>
 	// @ts-ignore
 	if (!images_data || !images_data.items) return (
 		<div>
