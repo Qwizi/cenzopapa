@@ -25,8 +25,10 @@ const Home: NextPage<Props> = ({images_data, error, page}: InferGetServerSidePro
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	try {
+		const api_url = process.env.API_URL;
+		console.log(api_url)
 		const page = context.query.page || 1
-		const response = await api.get(`/images/?page=${page}&size=10`);
+		const response = await api.get(`${api_url}/images/?page=${page}&size=10`);
 		const data: ImagesData = await response.data;
 		return {
 			props: {

@@ -6,6 +6,7 @@ import {useRouter} from "next/router";
 import {Button, Box} from "@mui/material";
 import {Image} from "../utils/typed";
 import Error from "next/error";
+import axios from "axios";
 
 type Props = {
 	image: Image,
@@ -31,7 +32,9 @@ const RandomCenzo: NextPage<Props> = ({image}) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	try {
-		const response = await api.get(`/images/random/`);
+		const api_url = process.env.API_URL;
+		const response = await axios.get(`${api_url}/images/random/`);
+		console.log(response.headers);
 		const data = await response.data;
 		return {
 			props: {
