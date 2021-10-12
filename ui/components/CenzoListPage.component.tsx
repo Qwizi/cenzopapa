@@ -1,10 +1,12 @@
 import {Skeleton} from "@mui/material";
 import React from "react";
 import {CenzoBox, Error, MyPagination} from "./index";
+import {ImagesData, Image} from "../utils/typed";
+
 
 type Props = {
 	error: string | null,
-	images_data: object | null,
+	images_data: ImagesData | null,
 	page: number,
 	pageIndex: number,
 	setPageIndex: any
@@ -12,6 +14,7 @@ type Props = {
 
 const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, page, pageIndex, setPageIndex}) => {
 	if (error) return <Error error_code={500} title={"Server error"} message={`Failed fetch`}/>
+	// @ts-ignore
 	if (!images_data || !images_data.items) return (
 		<div>
 			<Skeleton variant="rectangular" width={800} height={400} style={{marginTop: "1px", marginBottom: "5px", padding: "15px"}}/>
@@ -37,7 +40,7 @@ const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, pag
 				page={page}
 				setPageIndex={setPageIndex}
 			/>
-			{images_data.items.map((img: any, i: number) =>
+			{images_data.items.map((img: Image, i: number) =>
 				<CenzoBox key={i} public_url={img.public_url} />
 			)}
 			<MyPagination

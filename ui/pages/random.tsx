@@ -4,19 +4,23 @@ import {GetServerSideProps} from "next";
 import {api} from "../utils";
 import {useRouter} from "next/router";
 import {Button, Box} from "@mui/material";
+import {Image} from "../utils/typed";
+import Error from "next/error";
 
 type Props = {
-	image_data: object | null,
+	image: Image | null,
 	error: string | null
 }
 
-const RandomCenzo: NextPage<Props> = ({image_data}) => {
+const RandomCenzo: NextPage<Props> = ({image}) => {
 	const router = useRouter()
 	const refreshData = () => router.replace(router.asPath);
 
+	if (!image) return <Error statusCode={500}>Wystapil problem</Error>
+
 	return (
 		<div>
-			<CenzoBox public_url={image_data.public_url}/>
+			<CenzoBox public_url={image.public_url}/>
 			<Box mt={1} mb={5} style={{textAlign: "center"}}>
 				<Button
 					variant="contained"
