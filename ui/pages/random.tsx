@@ -32,7 +32,7 @@ const RandomCenzo: NextPage<Props> = ({image}) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	try {
-		const api_url = process.env.API_URL;
+		const api_url = process.env.API_URL ?? "https://api.jebzpapy.tk";
 		const response = await axios.get(`${api_url}/images/random/`);
 		console.log(response.headers);
 		const data = await response.data;

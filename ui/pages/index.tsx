@@ -25,7 +25,7 @@ const Home: NextPage<Props> = ({images_data, error, page}: InferGetServerSidePro
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	try {
-		const api_url = process.env.API_URL;
+		const api_url = process.env.API_URL  ?? "https://api.jebzpapy.tk";
 		console.log(api_url)
 		const page = context.query.page || 1
 		const response = await api.get(`${api_url}/images/?page=${page}&size=10`);
