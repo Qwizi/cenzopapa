@@ -2,23 +2,32 @@ import {Box, Paper} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 type Props = {
-	public_url: string
+	public_url: string,
+	height: number
+	width: number,
 }
 
-const CenzoBox: React.FunctionComponent<Props> = ({public_url}) => {
+const CenzoBox: React.FunctionComponent<Props> = ({public_url, height, width}) => {
 	return (
-		<Box mt={1} mb={5} style={{textAlign: "center"}}>
-			<Paper style={{padding: "15px"}} elevation={1}>
-				<Link href={public_url} passHref={true}>
-					<Image
+		<Box mt={1} mb={5} style={{textAlign: "center", alignItems: "center"}}>
+			<Paper style={{padding: "15px", width: "100%", height: "100%"}} elevation={1}>
+					{/*<Image
 						src={public_url ?? "/logo.png"}
-						width={600}
-						height={400}
+						width={width}
+						height={height}
 						alt={"Cenzopapa"}
-					/>
-				</Link>
+					/>*/}
+					<ImageListItem cols={1} rows={1}>
+						<Image
+							src={public_url ?? "/logo.png"}
+							width={width}
+							height={height}
+							alt={"Cenzopapa"}
+						/>
+					</ImageListItem>
 			</Paper>
 		</Box>
 	)

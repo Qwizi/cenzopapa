@@ -3,13 +3,15 @@ import {CenzoBox} from "../components";
 import {GetServerSideProps} from "next";
 import {api} from "../utils";
 import {useRouter} from "next/router";
-import {Button, Box} from "@mui/material";
-import {Image} from "../utils/typed";
+import {Button, Box, Paper} from "@mui/material";
+import {Image as ImageType} from "../utils/typed";
 import Error from "next/error";
 import axios from "axios";
-
+import ImageListItem from "@mui/material/ImageListItem";
+import React from "react";
+import Image from "next/image";
 type Props = {
-	image: Image,
+	image: ImageType,
 	error: string | null
 }
 
@@ -18,7 +20,16 @@ const RandomCenzo: NextPage<Props> = ({image}) => {
 	const refreshData = () => router.replace(router.asPath);
 	return (
 		<div>
-			<CenzoBox public_url={image.public_url}/>
+			<Box mt={1} mb={5} style={{textAlign: "center", alignItems: "center"}}>
+				<Paper style={{height: "100%" }} elevation={1}>
+					<Image
+						src={image.public_url ?? "/logo.png"}
+						width={image.width}
+						height={image.height}
+						alt={"Cenzopapa"}
+					/>
+				</Paper>
+			</Box>
 			<Box mt={1} mb={5} style={{textAlign: "center"}}>
 				<Button
 					variant="contained"
@@ -33,7 +44,7 @@ const RandomCenzo: NextPage<Props> = ({image}) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	try {
 		const api_url = process.env.API_URL ?? "https://api.jebzpapy.tk";
-		const response = await axios.get(`${api_url}/images/random/`);
+		const response = await axios.get(`${api_url}/aimages/random/`);
 		console.log(response.headers);
 		const data = await response.data;
 		return {

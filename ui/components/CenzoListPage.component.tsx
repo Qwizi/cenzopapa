@@ -1,4 +1,4 @@
-import {Skeleton} from "@mui/material";
+import {ImageList, Skeleton} from "@mui/material";
 import React from "react";
 import {CenzoBox, Error, MyPagination} from "./index";
 import {ImagesData, Image} from "../utils/typed";
@@ -6,15 +6,17 @@ import {ImagesData, Image} from "../utils/typed";
 
 type Props = {
 	error: string,
-	images_data: ImagesData,
+	images_data: ImagesData[],
 	page: number,
+	pages_count: number,
+	skip: number,
 	pageIndex: number,
-	setPageIndex: any
+	setPageIndex: any,
 }
 
-const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, page, pageIndex, setPageIndex}) => {
+const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, page, pages_count, skip, pageIndex, setPageIndex}) => {
 	// @ts-ignore
-	if (!images_data || !images_data.items) return (
+	if (!images_data) return (
 		<div>
 			<Skeleton variant="rectangular" width={800} height={400} style={{marginTop: "1px", marginBottom: "5px", padding: "15px"}}/>
 			<Skeleton variant="rectangular" width={800} height={400} style={{marginTop: "1px", marginBottom: "5px", padding: "15px"}}/>
@@ -33,18 +35,24 @@ const CenzoListPage: React.FunctionComponent<Props> = ({error , images_data, pag
 	return (
 		<div>
 			<MyPagination
-				total={images_data.total}
-				size={images_data.size}
+				total={pages_count}
+				size={10}
 				pageIndex={pageIndex}
 				page={page}
 				setPageIndex={setPageIndex}
 			/>
-			{images_data.items.map((img: Image, i: number) =>
-				<CenzoBox key={i} public_url={img.public_url} />
-			)}
+			<ImageList
+				sx={{ width: "100%", height: "auto" }}
+				variant="quilted"
+				cols={2}
+			>
+				{images_data.map((img: Image, i: number) =>
+					<CenzoBox key={i} public_url={img.public_url} width={img.width} height={img.height} />
+				)}
+			</ImageList>
 			<MyPagination
-				total={images_data.total}
-				size={images_data.size}
+				total={pages_count}
+				size={10}
 				pageIndex={pageIndex}
 				page={page}
 				setPageIndex={setPageIndex}

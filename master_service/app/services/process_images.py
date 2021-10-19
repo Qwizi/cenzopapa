@@ -19,11 +19,14 @@ class ProcessImageService(FireStorageMixin):
                             extension=extension,
                             public_url=public_url,
                             remote_image_url=image.remote_image_url,
-                            created_at=image.created_at
+                            created_at=image.created_at,
+                            height=image.height,
+                            width=image.width
+
                         )
                         logger.info(new_image)
 
         except Exception as exc:
-            logger.error("Somethink went wrong")
+            logger.error(f"Somethink went wrong {exc}")
             pass
 

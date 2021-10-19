@@ -17,9 +17,10 @@ function MyApp({Component, pageProps}: AppProps) {
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline/>
 			<Navbar/>
-			<Container maxWidth="md">
+			<Container fixed>
 				<Box
 					mt={10}
+					style={{ alignItems: "center", justifyContent: "center"}}
 				>
 					<Component {...pageProps} />
 				</Box>

@@ -10,10 +10,10 @@ scrap_router = APIRouter()
 
 
 @scrap_router.post("/")
-def scrap_sites(background_tasks: BackgroundTasks, initial_scrap: bool = False):
+def scrap_sites(background_tasks: BackgroundTasks, days: int = 1, years: int = None):
     sites = [
         WykopScrapService(client=httpx.Client(), site_name="Wykop", site_url="https://www.wykop.pl")
     ]
 
-    result = ScrapService(background_tasks, sites=sites).run_sites_scrap(initial_scrap)
+    result = ScrapService(background_tasks, sites=sites).run_sites_scrap(days, years)
     return handle_result(result)

@@ -27,6 +27,8 @@ class Image(ormar.Model):
     remote_image_url: str = ormar.String(max_length=255, nullable=True)
     public_url: str = ormar.String(max_length=255, nullable=True)
     created_at: datetime = ormar.DateTime(default=datetime.now)
+    height: int = ormar.Integer(default=600)
+    width: int = ormar.Integer(default=400)
 
 
 engine = sqlalchemy.create_engine(

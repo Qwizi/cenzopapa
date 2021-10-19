@@ -1,5 +1,6 @@
 import abc
 import logging
+from datetime import datetime, timedelta
 
 import httpx
 from fastapi.encoders import jsonable_encoder
@@ -31,9 +32,15 @@ class SiteMixin(HttpxClientMixin, abc.ABC):
     def scrap(self, initial_scrap=False):
         pass
 
-    def send_images_to_process(self, initial_scrap=False):
+    @staticmethod
+    def get_datetime(days: int = 1, years: int = None) -> datetime:
+        if not years:
+            return datetime.now() - timedelta(days=days)
+        return datetime.now() - timedelta(days=days * years)
+
+    def send_images_to_process(self, days, years):
         try:
             logger.info(f"Pobieranie danych rozpoczete")
-            self.scrap(initial_scrap)
+            self.scrap(days, years)
         except Exception as e:
             logger.error(e)

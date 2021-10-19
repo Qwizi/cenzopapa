@@ -7,12 +7,13 @@ from fastapi_pagination import add_pagination
 from fastapi_utils.tasks import repeat_every
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
+from fastapi_crudrouter import OrmarCRUDRouter
 
 from .utils.request_exceptions import http_exception_handler
 from .utils.request_exceptions import request_validation_exception_handler
 from .core import config
-from .core.db import database
-from .routers.image import images_router
+from .core.db import database, Image
+from .routers.images import images_router, crud_images_router
 from .routers.process_images import process_images_router
 from .utils.app_exceptions import app_exception_handler, AppExceptionCase
 
@@ -50,8 +51,6 @@ async def scrap_sites():
         await client.post("http://192.168.1.102:8501/scrap/")
 
 
-
-
 @app.on_event("shutdown")
 async def shutdown() -> None:
     database_ = app.state.database
@@ -75,6 +74,7 @@ async def custom_app_exception_handler(request, e):
 
 
 app.include_router(process_images_router, prefix="/process_images", tags=['process_images'])
-app.include_router(images_router, prefix="/images", tags=['images'])
+app.include_router(crud_images_router)
+app.include_router(images_router, prefix="/aimages", tags=['images_additional'])
 
 add_pagination(app)

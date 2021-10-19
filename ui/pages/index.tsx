@@ -2,22 +2,24 @@ import type {NextPage, GetServerSideProps, InferGetServerSidePropsType} from 'ne
 import React, {useState} from "react";
 import {CenzoListPage} from '../components';
 import {api} from "../utils";
-import {Image, ImagesData} from "../utils/typed";
+import {CountData, Image, ImagesData} from "../utils/typed";
 
 
 type Props = {
 	images_data: ImagesData,
 	error: string | null,
-	page: number
+	page: number,
+	pages_count: number,
+	skip: number
 }
 
-const Home: NextPage<Props> = ({images_data, error, page}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
+const Home: NextPage<Props> = ({images_data, error, page, pages_count, skip}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
 {
 	const [pageIndex, setPageIndex] = useState(page);
 
 	return (
 		<div>
-			<CenzoListPage images_data={images_data} error={error} pageIndex={pageIndex} page={page} setPageIndex={setPageIndex}/>
+			<CenzoListPage images_data={images_data} pages_count={pages_count} skip={skip} error={error} pageIndex={pageIndex} page={page} setPageIndex={setPageIndex}/>
 		</div>
 	)
 }
@@ -28,17 +30,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		const api_url = process.env.API_URL  ?? "https://api.jebzpapy.tk";
 		console.log(api_url)
 		const page = context.query.page || 1
-		const response = await api.get(`${api_url}/images/?page=${page}&size=10`);
-		const data: ImagesData = await response.data;
+		let skip: number;
+		if (page == 1) skip = 0
+		else skip = Number(page) * 10 - 10;
+		const countResponse = await api.get(`${api_url}/aimages/count`)
+		const countData: CountData = await countResponse.data;
+		const response = await api.get(`${api_url}/images/?skip=${skip}`);
+
+		const data: ImagesData[] = await response.data;
+		console.log(data);
+		console.log(countData.count)
 		return {
 			props: {
 				images_data: data,
+				pages_count: countData.count,
 				error: null,
-				page: page
+				page: page,
+				skip: skip
 			}
 		}
 	} catch (e: any) {
-
+		console.log(e);
 		return {
 			props: {
 				images_data: null,

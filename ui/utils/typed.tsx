@@ -1,13 +1,27 @@
 type Image = {
 	id: number,
-	public_url: string
+	filename: string,
+	extension: string,
+	remote_image_url: string,
+	public_url: string,
+	created_at: string,
+	height: number,
+	width: number
 }
 
 type ImagesData = {
-	size: number,
-	page: number,
-	total: number,
-	items: Image[],
+	id: number,
+	filename: string,
+	extension: string,
+	remote_image_url: string,
+	public_url: string,
+	created_at: string,
+	height: number,
+	width: number
 }
 
-export type {Image, ImagesData}
+type CountData = {
+	count: number
+}
+
+export type {Image, ImagesData, CountData}

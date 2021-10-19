@@ -15,20 +15,6 @@ logger = logging.getLogger(__name__)
 
 class ImageService:
     @staticmethod
-    async def get_last_10_images():
-        images = await Image.objects.order_by(Image.created_at.desc()).fields(["public_url"]).all()
-        images_list = []
-        for i in images:
-            image = ImageDBOut(url=i.public_url)
-            images_list.append(image)
-        if not images:
-            return ServiceResult(AppException.ImageError("Images list is empty"))
-        if not images_list:
-            return ServiceResult(AppException.ImageError("ImagesDBOut list is empty"))
-        paginated_images = paginate(images)
-        return ServiceResult(paginated_images)
-
-    @staticmethod
     async def get_random_image():
         try:
             last_image = await Image.objects.get()
@@ -46,8 +32,9 @@ class ImageService:
     async def get_images_count():
         try:
             count = await Image.objects.count()
+            logger.info(count)
             if not count:
-                return ServiceResult(AppException.ImageError("Somethink went wrong"))
+                return ServiceResult(ImageStats(count=0))
             return ServiceResult(ImageStats(count=count))
         except Exception:
             logger.error(f"Somethink went wrong")

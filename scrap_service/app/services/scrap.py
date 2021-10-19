@@ -12,14 +12,14 @@ class ScrapService:
         self.sites = sites
         self.initial_scrap = initial_scrap
         
-    def run_sites_scrap(self, initial_scrap):
+    def run_sites_scrap(self, days, years):
         result = []
         if not self.sites:
             return ServiceResult(AppException.ScrapFailed({"detail": "List of sites is empty"}))
         for site in self.sites:
             if not isinstance(site, SiteMixin):
                 return ServiceResult(AppException.ScrapFailed({"detail": "Site is not a instance of SiteMixin"}))
-            self.background_tasks.add_task(site.send_images_to_process, initial_scrap)
+            self.background_tasks.add_task(site.send_images_to_process, days, years)
             result.append({
                 "site": site.site_name
             })

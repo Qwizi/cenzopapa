@@ -9,6 +9,8 @@ from pydantic import BaseModel, Field
 class Image(BaseModel):
     remote_image_url: str
     created_at: datetime
+    height: int
+    width: int
 
 
 class ImageList(BaseModel):
@@ -24,6 +26,7 @@ class ImageDBModel(Image):
 
 class ImageDBOut(BaseModel):
     url: str
+
 
 class ImageStats(BaseModel):
     count: int
