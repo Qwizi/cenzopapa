@@ -2,6 +2,16 @@
 FROM node:14-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
+ENV SHARP_VERSION 0.29.1
+
+#Compile Vips and Sharp
+RUN	apk --no-cache add libpng librsvg libgsf giflib libjpeg-turbo musl \
+	&& apk add vips-dev fftw-dev build-base --update-cache  --repository https://alpine.global.ssl.fastly.net/alpine/edge/testing/  --repository https://alpine.global.ssl.fastly.net/alpine/edge/main \
+	&& apk --no-cache add --virtual .build-dependencies g++ make python curl tar gtk-doc gobject-introspection expat-dev glib-dev libpng-dev libjpeg-turbo-dev giflib-dev librsvg-dev  \
+	&& su node \
+	&& yarn add sharp --unsafe-perm \
+	&& chown node:node /usr/local/lib/node_modules -R \
+	&& apk del .build-dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
