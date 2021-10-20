@@ -1,7 +1,12 @@
 import {ImageList, Skeleton} from "@mui/material";
+import dynamic from 'next/dynamic'
 import React from "react";
-import {CenzoBox, Error, MyPagination} from "./index";
+//import {CenzoBox, Error, MyPagination} from "./index";
 import {ImagesData, Image} from "../utils/typed";
+
+const CenzoBox = dynamic(() => import('../components/CenzoBox.component'))
+const MyPagination = dynamic(() => import('../components/Pagination.component'))
+
 
 
 type Props = {

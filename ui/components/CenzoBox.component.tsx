@@ -26,6 +26,7 @@ const CenzoBox: React.FunctionComponent<Props> = ({public_url, height, width}) =
 							width={width}
 							height={height}
 							alt={"Cenzopapa"}
+							loading={"lazy"}
 						/>
 					</ImageListItem>
 			</Paper>
