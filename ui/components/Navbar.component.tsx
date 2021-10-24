@@ -15,7 +15,7 @@ const Navbar = () => {
 					<Link href={"/random"} passHref>
 						<Button>Wylosuj cenzo</Button>
 					</Link>
-					<Link href={"/api"} passHref>
+					<Link href={"/api-detail"} passHref>
 						<Button>API</Button>
 					</Link>
 				</Container>

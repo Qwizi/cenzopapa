@@ -27,6 +27,11 @@ function MyApp({Component, pageProps}: AppProps) {
 				>
 					<Component {...pageProps} />
 				</Box>
+				<Box mt={10}
+					 style={{ alignItems: "center", justifyContent: "center", textAlign: "center"}}
+				>
+					<p>Autor <a href={"https://github.com/Qwizi"}>Qwizi</a></p>
+				</Box>
 			</Container>
 		</ThemeProvider>
 	)
