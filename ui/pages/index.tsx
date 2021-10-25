@@ -53,6 +53,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 
 	try {
+		context.res.setHeader(
+			'Cache-Control',
+			'public, s-maxage=10, stale-while-revalidate=59'
+		)
 		const api_url = process.env.API_URL  ?? "https://api.jebzpapy.tk";
 		console.log(api_url)
 		const page = context.query.page || 1
