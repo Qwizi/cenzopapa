@@ -10,7 +10,7 @@ from images.serializers import ImageOutSerializer
 
 
 class ImageViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Image.objects.all().order_by('-posted_at')
+    queryset = Image.objects.filter(is_validated=True).order_by('-posted_at')
     serializer_class = ImageOutSerializer
 
     @action(detail=False)
