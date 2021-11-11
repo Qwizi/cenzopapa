@@ -1,4 +1,6 @@
 import uuid
+
+from django.conf import settings
 from django.db import models
 
 
@@ -12,6 +14,11 @@ class Image(models.Model):
     height = models.IntegerField(default=600)
     width = models.IntegerField(default=400)
     is_validated = models.BooleanField(default=False)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True
+    )
 
     def __str__(self):
         return f"[{self.id}] | {self.remote_image_url}"
