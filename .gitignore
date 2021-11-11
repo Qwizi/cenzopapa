@@ -2,12 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-<<<<<<< HEAD
 *.pyc
 
 .idea/
-=======
->>>>>>> 16e1bf3da1bf5569b68d65e896ca297925a8b437
 
 # C extensions
 *.so
@@ -148,6 +145,6 @@ cython_debug/
 # Text Editor
 .vscode
 
-master_service/serviceAccountKey.json
+server/serviceAccountKey.json
 # Byte-compiled / optimized / DLL files
 traefik-public-certificates/
