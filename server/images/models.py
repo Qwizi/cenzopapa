@@ -11,6 +11,7 @@ class Image(models.Model):
     posted_at = models.DateTimeField()
     height = models.IntegerField(default=600)
     width = models.IntegerField(default=400)
+    is_validated = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"[{self.id}] | {self.remote_image_url} | {self.public_url}"
+        return f"[{self.id}] | {self.remote_image_url}"
