@@ -3,6 +3,7 @@ from random import randint
 from django.db.models import Max
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from images.models import Image
@@ -16,6 +17,8 @@ class ImageViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False)
     def random(self, request):
         max_id = Image.objects.all().aggregate(max_id=Max("id"))['max_id']
+        if not max_id:
+            raise NotFound("Images not found")
         pk = randint(1, max_id)
         random_image = Image.objects.get(pk=pk)
         serializer = self.get_serializer(random_image)

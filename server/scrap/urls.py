@@ -1,6 +1,6 @@
-from rest_framework import routes
+from django.urls import path
 
-from views import Scrap
+from scrap.views import Scrap
 
 urlpatterns = [
     path('scrap/', Scrap.as_view(), name='scrap')
