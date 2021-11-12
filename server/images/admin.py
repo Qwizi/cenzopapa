@@ -13,10 +13,11 @@ def make_unvalidated(modelAdmin, request, queryset):
 
 
 class ImageAdmin(admin.ModelAdmin):
+    list_filter = [
+        "is_validated",
+    ]
     list_display = (
         'id',
-        'public_url',
-        'remote_image_url',
         'posted_at',
         'height',
         'width',
