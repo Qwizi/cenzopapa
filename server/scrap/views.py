@@ -8,7 +8,7 @@ class Scrap(APIView):
     def get(self, request, format=None):
 
         scrap_service = ScrapService()
-        a = AsyncTask(scrap_service.scrap, 7)
+        a = AsyncTask(scrap_service.scrap, 365, 2)
         a.run()
         print(a.result(wait=1))
         return Response(None)

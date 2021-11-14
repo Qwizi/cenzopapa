@@ -54,6 +54,6 @@ class ScrapService(object):
                         "width": width
                     }
                     images.append(image_dict)
-            sleep(random.choice(self.get_sleep_values()))
+            sleep(2)
             print(images)
             return images
