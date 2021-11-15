@@ -1,33 +1,21 @@
 version: '3.3'
 
 services:
-  scrap_service:
-    build: ./scrap_service
-    command: uvicorn app.main:app --reload --host 0.0.0.0
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    command: gunicorn server.wsgi:application --bind 0.0.0.0:8000
     ports:
-      - 8501:8000
-    networks:
-      - front_default
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.scrap_service.rule=Host(`scrap.jebzpapy.localhost`)"
-      - "traefik.http.routers.scrap_service.entrypoints=web"
-
-  master_service:
-    build: ./master_service
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --log-config logger.ini --reload --host 0.0.0.0'
-    expose: # new
-      - 8000
+      - 8000:8000
+    env_file:
+      - ./server/.env.prod
     depends_on:
       - db
-    networks:
-      - front_default
-    labels: # new
+    labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.master_service.rule=Host(`api.jebzpapy.tk`)"
-      - "traefik.http.routers.master_service.tls=true"
-      - "traefik.http.routers.master_service.tls.certresolver=letsencrypt"
-
+      - "traefik.http.routers.server.rule=Host(`api.jebzpapy.tk`)"
+      - "traefik.http.routers.server.entrypoints=web"
   db:
     image: postgres:13-alpine
     volumes:
