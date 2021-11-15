@@ -1,22 +1,17 @@
-import type {NextPage, GetServerSideProps, InferGetServerSidePropsType} from 'next'
-import dynamic from 'next/dynamic'
+import type {NextPage} from 'next'
 import React, {useEffect, useState} from "react";
-//import {CenzoListPage} from '../components';
-import {api, fetcher} from "../utils";
-import {CountData, Image} from "../utils/typed";
+import {fetcher} from "../utils";
 import useSWR from 'swr'
 import {CenzoListPage} from '../components';
 import {useRouter} from "next/router";
-import {CircularProgress, Skeleton} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 import {Box} from "@mui/system";
-import {Head} from "next/document";
-
 
 const Home: NextPage = () =>
 {
 	const router = useRouter();
 	const [pageIndex, setPageIndex] = useState(1);
-	const { data, error } = useSWR(`http://localhost:8000/images/?page=${pageIndex}`, fetcher)
+	const { data, error } = useSWR(`https://api.jebzpapy.tk/images/?page=${pageIndex}`, fetcher)
 
 	useEffect(() => {
 		if (router?.query?.page) {

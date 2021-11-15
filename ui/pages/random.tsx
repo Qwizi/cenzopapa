@@ -7,19 +7,14 @@ import {Button, Box, Paper, CircularProgress} from "@mui/material";
 import {Image as ImageType} from "../utils/typed";
 import Error from "next/error";
 import axios from "axios";
-import ImageListItem from "@mui/material/ImageListItem";
 import React from "react";
 import Image from "next/image";
 import useSWR from "swr";
-type Props = {
-	image: ImageType,
-	error: string | null
-}
 
-const RandomCenzo: NextPage<Props> = ({image}) => {
+const RandomCenzo: NextPage = () => {
 	const router = useRouter()
 
-	const { data, mutate, error } = useSWR(`http://localhost:8000/images/random/`, fetcher)
+	const { data, mutate, error } = useSWR<ImageType>(`https://api.jebzpapy.tk/images/random/`, fetcher)
 
 	if (error) return <div>failed to load</div>
 	if (!data) return (

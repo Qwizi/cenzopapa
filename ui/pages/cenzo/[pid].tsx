@@ -1,18 +1,17 @@
 import {NextPage} from "next";
 import useSWR from "swr";
 import {useRouter} from "next/router";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {fetcher} from "../../utils";
-import {CenzoListPage} from "../../components";
-import {Box, CircularProgress, Paper, Skeleton} from "@mui/material";
+import {Box, CircularProgress, Paper} from "@mui/material";
+import {Image as ImageType} from "../../utils/typed";
 import Image from "next/image";
 
 const CenzoDetail: NextPage = () =>
 {
 	const router = useRouter();
-	const [pageIndex, setPageIndex] = useState(1);
 	const {pid} = router.query;
-	const { data, error } = useSWR(`http://localhost:8000/images/${pid}`, fetcher)
+	const { data, error }  = useSWR<ImageType>(`https://api.jebzpapy.tk/images/${pid}`, fetcher)
 
 
 	if (error) return <div>failed to load</div>

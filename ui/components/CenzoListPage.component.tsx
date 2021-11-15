@@ -7,7 +7,6 @@ const CenzoBox = dynamic(() => import('../components/CenzoBox.component'))
 const MyPagination = dynamic(() => import('../components/Pagination.component'))
 
 type Props = {
-	id: number,
 	error: string,
 	data: Data,
 	pageIndex: number,
