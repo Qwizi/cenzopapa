@@ -36,13 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
     'django_q',
     'images',
-    'scrap'
+    'scrap',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -150,3 +152,4 @@ Q_CLUSTER = {
     'timeout': 90,
     'django_redis': 'default'
 }
+CORS_ORIGIN_ALLOW_ALL = True

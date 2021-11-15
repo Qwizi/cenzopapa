@@ -1,15 +1,16 @@
 import type {NextPage} from "next";
 import {CenzoBox} from "../components";
 import {GetServerSideProps} from "next";
-import {api} from "../utils";
+import {api, fetcher} from "../utils";
 import {useRouter} from "next/router";
-import {Button, Box, Paper} from "@mui/material";
+import {Button, Box, Paper, CircularProgress} from "@mui/material";
 import {Image as ImageType} from "../utils/typed";
 import Error from "next/error";
 import axios from "axios";
 import ImageListItem from "@mui/material/ImageListItem";
 import React from "react";
 import Image from "next/image";
+import useSWR from "swr";
 type Props = {
 	image: ImageType,
 	error: string | null
@@ -17,16 +18,28 @@ type Props = {
 
 const RandomCenzo: NextPage<Props> = ({image}) => {
 	const router = useRouter()
-	const refreshData = () => router.replace(router.asPath);
+
+	const { data, mutate, error } = useSWR(`http://localhost:8000/images/random/`, fetcher)
+
+	if (error) return <div>failed to load</div>
+	if (!data) return (
+		<Box mt={1} mb={5} style={{textAlign: "center", alignItems: "center"}}>
+			<CircularProgress />
+		</Box>
+	)
+	const refreshData = () => mutate();
+
+
 	return (
 		<div>
 			<Box mt={1} mb={5} style={{textAlign: "center", alignItems: "center"}}>
 				<Paper style={{height: "100%" }} elevation={1}>
 					<Image
-						src={image.public_url ?? "/logo.png"}
-						width={image.width}
-						height={image.height}
+						src={data.public_url ?? "/logo.png"}
+						width={data.width}
+						height={data.height}
 						alt={"Cenzopapa"}
+						onClick={() => router.push(`/cenzo/${data.id}`)}
 					/>
 				</Paper>
 			</Box>

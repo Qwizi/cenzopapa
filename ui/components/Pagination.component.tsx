@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 
 // @ts-ignore
-const MyPagination = ({page, total, size, pageIndex, setPageIndex}) => {
+const MyPagination = ({total, size, pageIndex, setPageIndex}) => {
 	const router = useRouter();
 
 	const handleChangePagination = (e: any, value: any) => {
@@ -14,7 +14,7 @@ const MyPagination = ({page, total, size, pageIndex, setPageIndex}) => {
 
 	return (
 		<Box mt={1} mb={5} style={{justifyContent: "center", display: "flex"}}>
-			<Pagination count={(Math.round(total / size))} variant="outlined" defaultPage={page} shape="rounded" page={Number(pageIndex)} onChange={handleChangePagination}/>
+			<Pagination count={(Math.round(total / size))} variant="outlined" defaultPage={Number(pageIndex)} shape="rounded" page={Number(pageIndex)} onChange={handleChangePagination}/>
 		</Box>
 	)
 }

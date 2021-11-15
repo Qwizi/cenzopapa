@@ -1,7 +1,7 @@
 import React from 'react';
 import type {AppProps} from 'next/app'
 import {ThemeProvider, createTheme} from '@mui/material/styles';
-import { Box, Container} from "@mui/material";
+import {Box, Container} from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 import {Navbar} from "../components";
 import Head from 'next/head'

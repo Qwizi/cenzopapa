@@ -1,4 +1,4 @@
-import {SetStateAction, useState} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {Box, Typography} from "@mui/material";
@@ -32,36 +32,12 @@ const TabPanel = (props) => {
 
 const ApiDetail = () => {
 
-	const [value, setValue] = useState(0);
-
-	const handleChange = (event: any, newValue: SetStateAction<number>) => {
-		setValue(newValue);
-	};
-
-	return (
-		<div>
-			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-				<Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-					<Tab label="Lista cenzopap" {...a11yProps(0)} />
-					<Tab label="Losowe cenzo" {...a11yProps(1)} />
-				</Tabs>
-			</Box>
-			<TabPanel value={value} index={0}>
-				<Typography variant={"h3"}>
-					Lista cenzo
-				</Typography>
-				<Typography variant={"h6"}>
-					Aby pobrac liste cenzo nalezy wyslac zapytanie na adres https://api.jebzpapy.tk
-				</Typography>
-				<Typography variant={"h6"}>
-					10 ostatnich cenzo - <code>https://api.jebzpapy.tk/images</code>
-				</Typography>
-			</TabPanel>
-			<TabPanel value={value} index={1}>
-				Item Two
-			</TabPanel>
-		</div>
-
+	useEffect(() => {
+		window.location.assign('https://api.jebzpapy.tk')
+	})
+	return(
+		<>
+		</>
 	)
 }
 
