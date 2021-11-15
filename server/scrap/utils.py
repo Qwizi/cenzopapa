@@ -1,9 +1,10 @@
-import random
 from datetime import datetime, timedelta
 from time import sleep
 
 import requests
 from bs4 import BeautifulSoup
+
+from images.models import Image
 
 
 class ScrapService(object):
@@ -11,7 +12,6 @@ class ScrapService(object):
 
     def __init__(self):
         self.client = requests.session()
-
 
     @staticmethod
     def get_sleep_values():
@@ -22,6 +22,40 @@ class ScrapService(object):
         if not years:
             return datetime.now() - timedelta(days=days)
         return datetime.now() - timedelta(days=days * years)
+
+    @staticmethod
+    def __create_new_image(image):
+        image_exists = Image.objects.filter(remote_image_url=image['remote_image_url']).exists()
+        new_image = None
+        if not image_exists:
+            new_image = Image.objects.create(
+                remote_image_url=image['remote_image_url'],
+                posted_at=image['posted_at'],
+                width=image['width'],
+                height=image['height'],
+                public_url=image['public_url'],
+                author_id=1,
+            )
+        return new_image
+
+    def __check_time(self, datetime_time_el, days=7, years=None):
+        return datetime_time_el <= self.get_datetime(days, years)
+
+    def __get_scrap_image(self, image):
+        img_el = image.find("img")
+        time_el = image.find("time")
+        datetime_time_el = time_el.attrs['datetime']
+        datetime_time_el = datetime.strptime(datetime_time_el[:-6], '%Y-%m-%dT%H:%M:%S')
+        height = int(float(img_el.get("data-height", 600)))
+        width = int(float(img_el.get("data-width", 400)))
+
+        return {
+            "remote_image_url": img_el['src'],
+            "posted_at": datetime_time_el,
+            "height": height,
+            "width": width,
+            "public_url": img_el['src']
+        }
 
     def scrap(self, days: int = 1, years: int = None):
         page_number = 0
@@ -39,21 +73,8 @@ class ScrapService(object):
                 repeat = False
             else:
                 for image in scrape_images:
-                    img_el = image.find("img")
-                    time_el = image.find("time")
-                    datetime_time_el = time_el.attrs['datetime']
-                    datetime_time_el = datetime.strptime(datetime_time_el[:-6], '%Y-%m-%dT%H:%M:%S')
-                    height = int(float(img_el.get("data-height", 600)))
-                    width = int(float(img_el.get("data-width", 400)))
-                    if datetime_time_el <= self.get_datetime(days, years):
-                        repeat = False
-                    image_dict = {
-                        "remote_image_url": img_el['src'],
-                        "posted_at": datetime_time_el,
-                        "height": height,
-                        "width": width
-                    }
-                    images.append(image_dict)
+                    img_dict = self.__get_scrap_image(image)
+                    repeat = self.__check_time(img_dict['posted_at'])
+                    new_image = self.__create_new_image(img_dict)
+                    print(new_image)
             sleep(2)
-            print(images)
-            return images
