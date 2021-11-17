@@ -9,6 +9,7 @@ class Image(models.Model):
     extension = models.CharField(max_length=255, null=False, default='.png')
     remote_image_url = models.URLField(default='http://localhost.pl/image.png')
     public_url = models.URLField(default='https://localhost.pl/image.png')
+    file = models.ImageField(upload_to="images", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     posted_at = models.DateTimeField()
     height = models.IntegerField(default=600)
