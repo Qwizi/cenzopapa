@@ -1,7 +1,6 @@
 # cenzopapa
 
-This project was generated via [manage-fastapi](https://ycd.github.io/manage-fastapi/)! :tada:
+API dla cenzo z papiezem polakiem
 
 ## License
-
-This project is licensed under the terms of the None license.
+GNU General Public License v3.0
