@@ -2,7 +2,6 @@
 import axios from "axios";
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data)
-const api = axios.create({
-	baseURL: process.env.API_URL
-})
-export {fetcher, api}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+export {fetcher, API_URL}
