@@ -1,7 +1,6 @@
 type Image = {
 	id: number,
-	remote_image_url: string,
-	public_url: string,
+	url: string,
 	posted_at: string,
 	height: number,
 	width: number

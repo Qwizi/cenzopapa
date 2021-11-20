@@ -26,7 +26,7 @@ const RandomCenzo: NextPage = () => {
 			<Box mt={1} mb={5} style={{textAlign: "center", alignItems: "center"}}>
 				<Paper style={{height: "100%" }} elevation={1}>
 					<Image
-						src={data.public_url ?? "/logo.png"}
+						src={data.url ?? "/logo.png"}
 						width={data.width}
 						height={data.height}
 						alt={"Cenzopapa"}

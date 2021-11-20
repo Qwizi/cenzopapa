@@ -28,7 +28,7 @@ const CenzoListPage: React.FunctionComponent<Props> = ({data, pageIndex, setPage
 				cols={2}
 			>
 				{data.results.map((img: Image, i: number) =>
-					<CenzoBox id={img.id} key={i} public_url={img.public_url} width={img.width} height={img.height} />
+					<CenzoBox id={img.id} key={i} url={img.url} width={img.width} height={img.height} />
 				)}
 			</ImageList>
 			<MyPagination
