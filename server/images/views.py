@@ -1,30 +1,37 @@
+from datetime import datetime
 from random import randint
 
 from django.db.models import Max
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page, never_cache
-from django.views.decorators.vary import vary_on_cookie
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from images.models import Image
+from images.permissions import IsAnonCreate
 from images.serializers import ImageOutSerializer
 
 
-class ImageViewSet(viewsets.ReadOnlyModelViewSet):
+
+
+class ImageViewSet(mixins.CreateModelMixin,
+                   mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+
     queryset = Image.objects.filter(is_validated=True).order_by('-posted_at')
     serializer_class = ImageOutSerializer
-
-    """
-    @method_decorator(cache_page(60 * 1))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-    """
+    permission_classes = [IsAnonCreate, ]
 
 
-    @never_cache
+    def perform_create(self, serializer):
+        file = self.request.data.get('file')
+        serializer.save(
+            author=self.request.user,
+            posted_at=datetime.now(),
+            file=file
+        )
+
     @action(detail=False)
     def random(self, request):
         max_id = Image.objects.all().aggregate(max_id=Max("id"))['max_id']

@@ -1,6 +1,10 @@
+import cloudinary.uploader
 from django.conf import settings
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
 
 class Image(models.Model):
     url = models.URLField(default='http://localhost.pl/image.png')
@@ -19,7 +23,21 @@ class Image(models.Model):
     def __str__(self):
         return f"[{self.id}] | {self.url}"
 
-    def save(self, *args, **kwargs):
-        if self.file:
-            self.url = self.file.url
-        super(Image, self).save(*args, **kwargs)
+
+def on_create_image(sender, **kwargs):
+    if kwargs['created']:
+        image = kwargs['instance']
+        if image.file:
+            image.url = image.file.url
+            image.save()
+
+
+post_save.connect(on_create_image, sender=Image)
+
+
+@receiver(post_delete, sender=Image)
+def save_profile(sender, instance, **kwargs):
+    if instance.file:
+        file_name = instance.file
+        cloudinary.uploader.destroy(file_name.public_id, invalidate=True)
+        print(file_name.public_id)
