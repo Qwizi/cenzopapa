@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'django_q',
+    'cloudinary',
     'images',
     'scrap',
 ]
@@ -164,5 +168,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
 }
 
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
+cloudinary.config(
+  cloud_name = os.environ.get("CLOUD_NAME"),
+  api_key = os.environ.get("CLOUD_API_KEY"),
+  api_secret = os.environ.get("CLOUD_API_SECRET")
+)

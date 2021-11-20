@@ -2,7 +2,7 @@ import {Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Link, TextField, 
 
 const Login = () => {
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: any) => {
 		e.target.preventDefault();
 		console.log("wyslano");
 	}
@@ -16,7 +16,7 @@ const Login = () => {
 				alignItems: 'center',
 			}}
 		>
-			<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+			<Avatar sx={{ m: 1, bgcolor: 'secondary' }}>
 
 			</Avatar>
 			<Typography component="h1" variant="h5">
