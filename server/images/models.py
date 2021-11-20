@@ -37,17 +37,6 @@ def on_create_image(sender, **kwargs):
 post_save.connect(on_create_image, sender=Image)
 
 
-@receiver(post_save, sender=Image)
-def save_image(sender, instance, **kwargs):
-    if instance.file:
-        if instance.file.url:
-            instance.url = instance.file.url
-
-        if instance.file.metadata:
-            instance.height = instance.file.metadata.get("height")
-            instance.width = instance.file.metadata.get("width")
-
-
 @receiver(post_delete, sender=Image)
 def delete_image_in_cloudinary(sender, instance, **kwargs):
     if instance.file:

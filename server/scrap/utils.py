@@ -25,15 +25,15 @@ class ScrapService(object):
 
     @staticmethod
     def __create_new_image(image):
-        image_exists = Image.objects.filter(remote_image_url=image['remote_image_url']).exists()
+        image_exists = Image.objects.filter(url=image['url']).exists()
         new_image = None
+        print(image)
         if not image_exists:
             new_image = Image.objects.create(
-                remote_image_url=image['remote_image_url'],
                 posted_at=image['posted_at'],
                 width=image['width'],
                 height=image['height'],
-                public_url=image['public_url'],
+                url=image['url'],
                 author_id=1,
             )
         return new_image
@@ -50,18 +50,16 @@ class ScrapService(object):
         width = int(float(img_el.get("data-width", 400)))
 
         return {
-            "remote_image_url": img_el['src'],
             "posted_at": datetime_time_el,
             "height": height,
             "width": width,
-            "public_url": img_el['src']
+            "url": img_el['src']
         }
 
     def scrap(self, days: int = 1, years: int = None):
         page_number = 0
         repeat = True
         while repeat:
-            images = []
             page_number += 1
             url = f"{self.site_url}/strona/{page_number}"
             response = self.client.get(url)
@@ -74,7 +72,8 @@ class ScrapService(object):
             else:
                 for image in scrape_images:
                     img_dict = self.__get_scrap_image(image)
-                    repeat = self.__check_time(img_dict['posted_at'])
+                    if self.__check_time(img_dict['posted_at']):
+                        repeat = False
                     new_image = self.__create_new_image(img_dict)
                     print(new_image)
             sleep(2)
