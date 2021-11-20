@@ -12,4 +12,6 @@ class ImageSerializer(serializers.ModelSerializer):
 class ImageOutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'public_url', 'width', 'height', 'posted_at', 'author']
+        fields = ['id', 'url', 'width', 'height', 'posted_at', 'author']
+        read_only_fields = ['id', 'url', 'width', 'posted_at', 'author']
+        write_fields = ['file']
