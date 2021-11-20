@@ -3,8 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/logo.png";
 import React from "react";
+import {useRouter} from "next/router";
 
 const Navbar = () => {
+	const router = useRouter();
 	return (
 		<AppBar position="static" elevation={1}>
 			<Toolbar>
@@ -19,6 +21,8 @@ const Navbar = () => {
 						<Button>API</Button>
 					</Link>
 				</Container>
+				<Button color="inherit" onClick={() => router.push('/login')}>Login</Button>
+				<Button color="inherit" onClick={() => router.push('/register')}>Register</Button>
 			</Toolbar>
 		</AppBar>
 	)
