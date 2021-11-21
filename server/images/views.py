@@ -64,3 +64,21 @@ class ImageViewSet(mixins.CreateModelMixin,
             raise NotFound("This image is not in your favorites")
         user.favorite_images.remove(image)
         return Response(data={"msg": "Successfully removed image from favorites"}, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['POST'])
+    def like(self, request, pk):
+        image = self.get_object()
+        user = self.request.user
+        if image.likes.filter(pk=user.pk).exists():
+            raise NotFound("U have already like this image")
+        image.likes.add(user)
+        return Response(data={"msg": "Successfully liked image"}, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['POST'])
+    def unlike(self, request, pk):
+        image = self.get_object()
+        user = self.request.user
+        if not image.likes.filter(pk=user.pk).exists():
+            raise NotFound("This image is not liked")
+        image.likes.remove(user)
+        return Response(data={"msg": "Successfully unliked image"}, status=status.HTTP_201_CREATED)
