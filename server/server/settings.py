@@ -32,13 +32,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'users',
     'corsheaders',
     'rest_framework',
     'djoser',
@@ -175,3 +176,5 @@ cloudinary.config(
   api_key = os.environ.get("CLOUD_API_KEY"),
   api_secret = os.environ.get("CLOUD_API_SECRET")
 )
+
+AUTH_USER_MODEL = 'users.CUser'
