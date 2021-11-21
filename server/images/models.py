@@ -19,6 +19,7 @@ class Image(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="likes")
 
     def __str__(self):
         return f"[{self.id}] | {self.url}"
