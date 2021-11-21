@@ -42,4 +42,3 @@ def delete_image_in_cloudinary(sender, instance, **kwargs):
     if instance.file:
         file_name = instance.file
         cloudinary.uploader.destroy(file_name.public_id, invalidate=True)
-        print(file_name.public_id)
