@@ -12,6 +12,11 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+RUN apk add --no-cache \
+        libressl-dev \
+        musl-dev \
+        libffi-dev
+
 # install psycopg2 dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev
