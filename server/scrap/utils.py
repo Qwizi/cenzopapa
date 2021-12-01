@@ -72,7 +72,7 @@ class ScrapService(object):
             else:
                 for image in scrape_images:
                     img_dict = self.__get_scrap_image(image)
-                    if self.__check_time(img_dict['posted_at']):
+                    if self.__check_time(img_dict['posted_at'], days=days, years=years):
                         repeat = False
                     new_image = self.__create_new_image(img_dict)
                     print(new_image)
