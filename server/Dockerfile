@@ -30,7 +30,9 @@ RUN apk update \
     tcl-dev \
     tiff-dev \
     tk-dev \
-    zlib-dev
+    zlib-dev \
+    rust \
+    cargo
 
 # lint
 RUN pip install --upgrade pip
