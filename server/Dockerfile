@@ -20,7 +20,6 @@ RUN apk update \
     postgresql-dev \
     gcc \
     python3-dev \
-    musl-dev \
     freetype-dev \
     fribidi-dev \
     harfbuzz-dev \
@@ -30,7 +29,9 @@ RUN apk update \
     tcl-dev \
     tiff-dev \
     tk-dev \
-    zlib-dev
+    zlib-dev \
+    rust \
+    cargo
 
 # lint
 RUN pip install --upgrade pip
