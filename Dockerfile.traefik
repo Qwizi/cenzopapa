@@ -1,3 +1,2 @@
 FROM traefik:latest
-
 COPY ./traefik.prod.toml ./etc/traefik/traefik.toml

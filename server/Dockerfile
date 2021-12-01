@@ -12,14 +12,25 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apk add --no-cache \
-        libressl-dev \
-        musl-dev \
-        libffi-dev
-
-# install psycopg2 dependencies
+#Install dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+  && apk add --no-cache libressl-dev \
+    musl-dev \
+    libffi-dev \
+    postgresql-dev \
+    gcc \
+    python3-dev \
+    musl-dev \
+    freetype-dev \
+    fribidi-dev \
+    harfbuzz-dev \
+    jpeg-dev \
+    lcms2-dev \
+    openjpeg-dev \
+    tcl-dev \
+    tiff-dev \
+    tk-dev \
+    zlib-dev
 
 # lint
 RUN pip install --upgrade pip
@@ -57,8 +68,8 @@ RUN pip install --no-cache /wheels/*
 
 # copy entrypoint.prod.sh
 COPY ./entrypoint.prod.sh .
-RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.prod.sh
-RUN chmod +x  $APP_HOME/entrypoint.prod.sh
+RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.prod.sh
+RUN chmod 0755 $APP_HOME/entrypoint.prod.sh
 
 # copy project
 COPY . $APP_HOME
