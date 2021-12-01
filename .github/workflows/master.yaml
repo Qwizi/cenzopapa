@@ -17,6 +17,8 @@ jobs:
           ssh_private_key: ${{ secrets.KEY }}
           ssh_user: ${{ secrets.USER }}
           env_args: ${{ secrets.ENV_ARGS }}
+          docker_compose_prefix: api
+          workspace: ${{ secrets.WORKSPACE }}
     - uses: Ilshidur/action-discord@master
       name: Discord notification
       env:
