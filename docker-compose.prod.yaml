@@ -10,8 +10,6 @@ services:
     restart: unless-stopped
     expose:
       - 8001
-    env_file:
-      - server/.env
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa
@@ -40,8 +38,6 @@ services:
     image: cenzopapa_server
     command: python manage.py qcluster
     restart: unless-stopped
-    env_file:
-      - server/.env
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa

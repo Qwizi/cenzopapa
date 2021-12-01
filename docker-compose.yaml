@@ -23,8 +23,6 @@ services:
     volumes:
       - .:/code
     restart: unless-stopped
-    env_file:
-      - server/.env
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa
