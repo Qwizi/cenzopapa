@@ -1,36 +1,63 @@
-version: '3.3'
+version: '3.7'
 
 services:
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
+    image: cenzopapa_server
     command: gunicorn server.wsgi:application --bind 0.0.0.0:8001
-    expose: # new
+    restart: unless-stopped
+    expose:
       - 8001
     env_file:
-      - ./server/.env.prod
+      - ./server/.env
+    environment:
+      - DB_NAME=cenzopapa
+      - DB_USER=cenzopapa
+      - DB_PASSWORD=cenzopapa
+      - DB_HOST=db
+      - DEBUG=1
+      - SECRET_KEY=cenzopapa
+      - REDIS=redis://redis:6379/1
+      - CLOUD_NAME=name
+      - CLOUD_API_KEY=key
+      - CLOUD_API_SECRET=secret
     depends_on:
       - db
       - redis
-    labels: # new
+    labels:
       - "traefik.enable=true"
       - "traefik.http.routers.server.rule=Host(`api.jebzpapy.tk`)"
       - "traefik.http.routers.server.tls=true"
       - "traefik.http.routers.server.tls.certresolver=letsencrypt"
     networks:
-      - front_default
+      - cenzopapa
   django-q:
-    build: ./server
+    image: cenzopapa_server
     command: python manage.py qcluster
-    volumes:
-      - .:/server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      - DB_NAME=cenzopapa
+      - DB_USER=cenzopapa
+      - DB_PASSWORD=cenzopapa
+      - DB_HOST=db
+      - DEBUG=1
+      - SECRET_KEY=cenzopapa
+      - REDIS=redis://redis:6379/1
+      - CLOUD_NAME=name
+      - CLOUD_API_KEY=key
+      - CLOUD_API_SECRET=secret
     depends_on:
       - redis
+      - server
     networks:
-      - front_default
+      - cenzopapa
   db:
     image: postgres:13-alpine
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -40,23 +67,25 @@ services:
     expose:
       - 5432
     networks:
-      - front_default
+      - cenzopapa
   redis:
     image: "redis:alpine"
+    restart: unless-stopped
     ports:
       - "6379:6379"
     networks:
-      - front_default
+      - cenzopapa
 
-  traefik: # new
+  traefik:
     build:
       context: .
       dockerfile: Dockerfile.traefik
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
     networks:
-      - front_default
+      - cenzopapa
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
@@ -70,7 +99,7 @@ services:
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$3zmpgibf$$LXodktr0JOkTSNAWCZKlw1"
 
 networks:
-  front_default:
+  cenzopapa:
 
 volumes:
   postgres_data:
