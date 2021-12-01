@@ -15,6 +15,29 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+  django-q-local:
+    build:
+      context: ./server
+      dockerfile: DockerfileLocal
+    command: python manage.py qcluster
+    volumes:
+      - .:/code
+    restart: unless-stopped
+    env_file:
+      - server/.env_dupa
+    environment:
+      - DB_NAME=cenzopapa
+      - DB_USER=cenzopapa
+      - DB_PASSWORD=cenzopapa
+      - DB_HOST=db
+      - DEBUG=1
+      - SECRET_KEY=cenzopapa
+      - REDIS=redis://redis:6379/1
+      - CLOUD_NAME=name
+      - CLOUD_API_KEY=key
+      - CLOUD_API_SECRET=secret
+    depends_on:
+      - redis
 
 volumes:
   postgres_data:

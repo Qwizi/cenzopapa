@@ -145,6 +145,6 @@ cython_debug/
 # Text Editor
 .vscode
 
-server/serviceAccountKey.json
 # Byte-compiled / optimized / DLL files
 traefik-public-certificates/
+action_command.txt

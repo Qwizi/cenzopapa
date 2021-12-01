@@ -11,7 +11,7 @@ services:
     expose:
       - 8001
     env_file:
-      - ./server/.env
+      - server/.env_dupa
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa
@@ -23,6 +23,9 @@ services:
       - CLOUD_NAME=name
       - CLOUD_API_KEY=key
       - CLOUD_API_SECRET=secret
+      - SUPER_USER_USERNAME=username
+      - SUPER_USER_EMAIL=email
+      - SUPER_USER_PASS=pass
     depends_on:
       - db
       - redis
@@ -38,7 +41,7 @@ services:
     command: python manage.py qcluster
     restart: unless-stopped
     env_file:
-      - ./server/.env
+      - server/.env_dupa
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa
@@ -50,6 +53,9 @@ services:
       - CLOUD_NAME=name
       - CLOUD_API_KEY=key
       - CLOUD_API_SECRET=secret
+      - SUPER_USER_USERNAME=username
+      - SUPER_USER_EMAIL=email
+      - SUPER_USER_PASS=pass
     depends_on:
       - redis
       - server
