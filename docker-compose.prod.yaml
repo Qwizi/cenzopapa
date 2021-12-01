@@ -90,7 +90,7 @@ services:
       - cenzopapa
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
+      - "./certificates:/certificates"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`dashboard.jebzpapy.tk`) && (PathPrefix(`/`))"
