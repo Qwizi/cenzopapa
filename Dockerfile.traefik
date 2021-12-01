@@ -1,2 +1,5 @@
 FROM traefik:latest
+RUN mkdir certificates/
+RUN touch certificates/acme.json
+RUN chmod 600 certificates/acme.json
 COPY ./traefik.prod.toml ./etc/traefik/traefik.toml
