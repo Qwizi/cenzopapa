@@ -24,7 +24,7 @@ services:
       - .:/code
     restart: unless-stopped
     env_file:
-      - server/.env_dupa
+      - server/.env
     environment:
       - DB_NAME=cenzopapa
       - DB_USER=cenzopapa
