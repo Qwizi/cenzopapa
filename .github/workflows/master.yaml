@@ -1,0 +1,25 @@
+name: remote ssh command
+on:
+  push:
+    branches:
+      - master
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: Qwizi/github-action-ssh-docker-compose@master
+      name: Docker-Compose Remote Deployment
+      with:
+          ssh_host: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.KEY }}
+          ssh_user: ${{ secrets.USER }}
+          env_args: ${{ secrets.ENV_ARGS }}
+    - uses: Ilshidur/action-discord@master
+      name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
