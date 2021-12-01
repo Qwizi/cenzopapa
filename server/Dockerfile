@@ -20,7 +20,6 @@ RUN apk update \
     postgresql-dev \
     gcc \
     python3-dev \
-    musl-dev \
     freetype-dev \
     fribidi-dev \
     harfbuzz-dev \
