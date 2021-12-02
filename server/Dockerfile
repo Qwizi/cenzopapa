@@ -2,7 +2,7 @@ FROM python:3
 RUN mkdir /project
 WORKDIR /project
 
-RUN apt-get install build-essential libssl-dev libffi-dev python3-dev cargo
+RUN apt-get install rustc
 
 COPY requirements.txt /project/
 RUN pip install --upgrade pip
