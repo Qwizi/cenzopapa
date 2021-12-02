@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -23,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -88,10 +90,10 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
         'PORT': 5432,
     }
 }
@@ -148,7 +150,7 @@ REST_FRAMEWORK = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get("REDIS"),
+        "LOCATION": config("REDIS"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -172,9 +174,9 @@ SIMPLE_JWT = {
 }
 
 cloudinary.config(
-  cloud_name = os.environ.get("CLOUD_NAME"),
-  api_key = os.environ.get("CLOUD_API_KEY"),
-  api_secret = os.environ.get("CLOUD_API_SECRET")
+    cloud_name=config("CLOUD_NAME"),
+    api_key=config("CLOUD_API_KEY"),
+    api_secret=config("CLOUD_API_SECRET")
 )
 
 AUTH_USER_MODEL = 'users.CUser'
