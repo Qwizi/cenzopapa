@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Wait for the postgres container to finish booting before running whatever
-# we're gonna run.
-#
-
 DB_NAME=cenzopapa
 DB_PORT=5432
 
@@ -20,4 +16,5 @@ for _ in `seq 0 100`; do
 done
 python manage.py collectstatic --noinput
 python manage.py migrate
+python manage.py loaddata initial_images_data.json
 exec "$@"

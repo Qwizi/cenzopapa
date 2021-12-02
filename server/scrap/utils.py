@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.utils.timezone import make_aware
 from time import sleep
 
 import requests
@@ -30,7 +31,7 @@ class ScrapService(object):
         print(image)
         if not image_exists:
             new_image = Image.objects.create(
-                posted_at=image['posted_at'],
+                posted_at=make_aware(image['posted_at']),
                 width=image['width'],
                 height=image['height'],
                 url=image['url'],
