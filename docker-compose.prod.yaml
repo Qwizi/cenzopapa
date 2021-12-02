@@ -11,19 +11,19 @@ services:
     expose:
       - 8001
     environment:
-      - DB_NAME=cenzopapa
-      - DB_USER=cenzopapa
-      - DB_PASSWORD=cenzopapa
-      - DB_HOST=db
-      - DEBUG=1
-      - SECRET_KEY=cenzopapa
-      - REDIS=redis://redis:6379/1
-      - CLOUD_NAME=name
-      - CLOUD_API_KEY=key
-      - CLOUD_API_SECRET=secret
-      - SUPER_USER_USERNAME=username
-      - SUPER_USER_EMAIL=email
-      - SUPER_USER_PASS=pass
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DEBUG
+      - SECRET_KEY
+      - REDIS
+      - CLOUD_NAME
+      - CLOUD_API_KEY
+      - CLOUD_API_SECRET
+      - SUPER_USER_USERNAME
+      - SUPER_USER_EMAIL
+      - SUPER_USER_PASS
     depends_on:
       - db
       - redis
@@ -39,19 +39,19 @@ services:
     command: python manage.py qcluster
     restart: unless-stopped
     environment:
-      - DB_NAME=cenzopapa
-      - DB_USER=cenzopapa
-      - DB_PASSWORD=cenzopapa
-      - DB_HOST=db
-      - DEBUG=1
-      - SECRET_KEY=cenzopapa
-      - REDIS=redis://redis:6379/1
-      - CLOUD_NAME=name
-      - CLOUD_API_KEY=key
-      - CLOUD_API_SECRET=secret
-      - SUPER_USER_USERNAME=username
-      - SUPER_USER_EMAIL=email
-      - SUPER_USER_PASS=pass
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DEBUG
+      - SECRET_KEY
+      - REDIS
+      - CLOUD_NAME
+      - CLOUD_API_KEY
+      - CLOUD_API_SECRET
+      - SUPER_USER_USERNAME
+      - SUPER_USER_EMAIL
+      - SUPER_USER_PASS
     depends_on:
       - redis
       - server
@@ -90,7 +90,7 @@ services:
       - cenzopapa
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./certificates:/certificates"
+#      - "./certificates:/certificates"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`dashboard.jebzpapy.tk`) && (PathPrefix(`/`))"
@@ -105,3 +105,4 @@ networks:
 
 volumes:
   postgres_data:
+#  certificates:
