@@ -24,6 +24,7 @@ services:
       - SUPER_USER_USERNAME
       - SUPER_USER_EMAIL
       - SUPER_USER_PASS
+      - WAIT_HOSTS=db:5432
     depends_on:
       - db
       - redis
@@ -52,6 +53,7 @@ services:
       - SUPER_USER_USERNAME
       - SUPER_USER_EMAIL
       - SUPER_USER_PASS
+      - WAIT_HOSTS=db:5432
     depends_on:
       - redis
       - server
