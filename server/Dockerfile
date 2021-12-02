@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 #Install dependencies
 
-RUN apt-get install -y --no-install-recommends gcc libc-dev python3-dev
+RUN apt-get install -y --no-install-recommends libc-dev python3-dev
 # lint
 RUN pip install --upgrade pip
 COPY . .
