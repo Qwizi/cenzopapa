@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential libpq-dev \
+  && apt-get install -y --no-install-recommends build-essential libpq-dev libssl-dev libffi-dev python3-dev cargo \
   && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
