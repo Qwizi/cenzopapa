@@ -5,6 +5,7 @@ from django.db import migrations
 
 
 def create_super_user(apps, schema_editor):
+    # TODO poprawic na CONFIG
     User = apps.get_model('users', 'CUser')
     password = os.environ.get("SUPER_USER_PASS")
     username = os.environ.get("SUPER_USER_USERNAME")
