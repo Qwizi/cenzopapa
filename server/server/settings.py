@@ -13,9 +13,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,9 +41,7 @@ INSTALLED_APPS = [
     'users',
     'corsheaders',
     'rest_framework',
-    'djoser',
     'django_q',
-    'cloudinary',
     'images',
     'scrap',
 ]
@@ -142,9 +137,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
 }
 
 CACHES = {
@@ -159,7 +151,7 @@ CACHES = {
 
 Q_CLUSTER = {
     'name': 'DJRedis',
-    'workers': 2,
+    'workers': 1,
     'retry': 160,
     'timeout': 90,
     'django_redis': 'default'
@@ -167,16 +159,5 @@ Q_CLUSTER = {
 CORS_ORIGIN_ALLOW_ALL = True
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-}
-
-cloudinary.config(
-    cloud_name=config("CLOUD_NAME"),
-    api_key=config("CLOUD_API_KEY"),
-    api_secret=config("CLOUD_API_SECRET")
-)
 
 AUTH_USER_MODEL = 'users.CUser'

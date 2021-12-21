@@ -1,12 +1,10 @@
 from datetime import datetime
 from random import randint
 
-from django.contrib.auth import get_user_model
 from django.db.models import Max
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from images.models import Image
