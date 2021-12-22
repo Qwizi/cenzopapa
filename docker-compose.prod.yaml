@@ -42,9 +42,10 @@ services:
       - SUPER_USER_USERNAME
       - SUPER_USER_EMAIL
       - SUPER_USER_PASS
-      - WAIT_HOSTS=db:5432
-      - VIRTUAL_HOST=api.jebzpapy.local
+      - VIRTUAL_HOST=api.jebzpapy.tk
       - VIRTUAL_PORT=8001
+      - LETSENCRYPT_HOST=api.jebzpapy.tk
+      - LETSENCRYPT_EMAIL=qwizi95@protonmail.com
     depends_on:
       - db
       - redis

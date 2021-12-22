@@ -19,19 +19,7 @@ RUN apk update \
     libffi-dev \
     postgresql-dev \
     gcc \
-    python3-dev \
-    freetype-dev \
-    fribidi-dev \
-    harfbuzz-dev \
-    jpeg-dev \
-    lcms2-dev \
-    openjpeg-dev \
-    tcl-dev \
-    tiff-dev \
-    tk-dev \
-    zlib-dev \
-    rust \
-    cargo
+    python3-dev
 
 # lint
 RUN pip install --upgrade pip
@@ -67,11 +55,6 @@ COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint.prod.sh
-#COPY ./entrypoint.prod.sh .
-#RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.prod.sh
-#RUN chmod 0755 $APP_HOME/entrypoint.prod.sh
-
 # copy project
 COPY . $APP_HOME
 
@@ -80,6 +63,3 @@ RUN chown -R app:app $APP_HOME
 
 # change to the app user
 USER app
-
-# run entrypoint.prod.sh
-#ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
