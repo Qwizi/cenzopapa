@@ -2,14 +2,15 @@
 import os
 
 from django.db import migrations
+from decouple import config
 
 
 def create_super_user(apps, schema_editor):
     # TODO poprawic na CONFIG
     User = apps.get_model('users', 'CUser')
-    password = os.environ.get("SUPER_USER_PASS")
-    username = os.environ.get("SUPER_USER_USERNAME")
-    email = os.environ.get("SUPER_USER_EMAIL")
+    password = config("SUPER_USER_PASS")
+    username = config("SUPER_USER_USERNAME")
+    email = config("SUPER_USER_EMAIL")
     if not User.objects.filter(username=username).exists():
         User.objects.create_superuser(username=username, email=email, password=password)
 

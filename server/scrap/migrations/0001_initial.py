@@ -5,7 +5,7 @@ from django.db import migrations
 def create_task(apps, schema_editor):
     from django_q.tasks import schedule
     func = 'scrap.tasks.scrap_images'
-    schedule(func, 7, schedule_type='H')
+    schedule(func, 7, schedule_type='D')
 
 
 class Migration(migrations.Migration):

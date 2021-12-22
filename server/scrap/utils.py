@@ -28,7 +28,6 @@ class ScrapService(object):
     def __create_new_image(image):
         image_exists = Image.objects.filter(url=image['url']).exists()
         new_image = None
-        print(image)
         if not image_exists:
             new_image = Image.objects.create(
                 posted_at=make_aware(image['posted_at']),
@@ -76,5 +75,6 @@ class ScrapService(object):
                     if self.__check_time(img_dict['posted_at'], days=days, years=years):
                         repeat = False
                     new_image = self.__create_new_image(img_dict)
-                    print(new_image)
+                    if new_image:
+                        print(new_image)
             sleep(2)
