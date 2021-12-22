@@ -12,21 +12,11 @@ from images.permissions import IsAnonCreate
 from images.serializers import ImageOutSerializer
 
 
-class ImageViewSet(mixins.CreateModelMixin,
-                   mixins.ListModelMixin,
+class ImageViewSet(mixins.ListModelMixin,
                    mixins.RetrieveModelMixin,
                    viewsets.GenericViewSet):
     queryset = Image.objects.filter(is_validated=True).order_by('-posted_at')
     serializer_class = ImageOutSerializer
-    permission_classes = [IsAnonCreate, ]
-
-    def perform_create(self, serializer):
-        file = self.request.data.get('file')
-        serializer.save(
-            author=self.request.user,
-            posted_at=datetime.now(),
-            file=file
-        )
 
     @action(detail=False)
     def random(self, request):
@@ -44,39 +34,3 @@ class ImageViewSet(mixins.CreateModelMixin,
                 repeat = True
         serializer = self.get_serializer(random_image)
         return Response(serializer.data)
-
-    @action(detail=True, methods=['POST'])
-    def favorite(self, request, pk):
-        image = self.get_object()
-        user = self.request.user
-        if user.favorite_images.filter(pk=image.pk).exists():
-            raise NotFound("This image is already your favorite")
-        user.favorite_images.add(image)
-        return Response(data={"msg": "Successfully added image to favorites"}, status=status.HTTP_201_CREATED)
-
-    @action(detail=True, methods=['POST'])
-    def unfavorite(self, request, pk):
-        image = self.get_object()
-        user = self.request.user
-        if not user.favorite_images.filter(pk=image.pk).exists():
-            raise NotFound("This image is not in your favorites")
-        user.favorite_images.remove(image)
-        return Response(data={"msg": "Successfully removed image from favorites"}, status=status.HTTP_201_CREATED)
-
-    @action(detail=True, methods=['POST'])
-    def like(self, request, pk):
-        image = self.get_object()
-        user = self.request.user
-        if image.likes.filter(pk=user.pk).exists():
-            raise NotFound("U have already like this image")
-        image.likes.add(user)
-        return Response(data={"msg": "Successfully liked image"}, status=status.HTTP_201_CREATED)
-
-    @action(detail=True, methods=['POST'])
-    def unlike(self, request, pk):
-        image = self.get_object()
-        user = self.request.user
-        if not image.likes.filter(pk=user.pk).exists():
-            raise NotFound("This image is not liked")
-        image.likes.remove(user)
-        return Response(data={"msg": "Successfully unliked image"}, status=status.HTTP_201_CREATED)

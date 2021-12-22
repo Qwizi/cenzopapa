@@ -152,8 +152,8 @@ CACHES = {
 Q_CLUSTER = {
     'name': 'DJRedis',
     'workers': 1,
-    'retry': 160,
-    'timeout': 90,
+    'retry': 460,
+    'timeout': 360,
     'django_redis': 'default'
 }
 CORS_ORIGIN_ALLOW_ALL = True

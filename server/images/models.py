@@ -8,7 +8,7 @@ class Image(models.Model):
     posted_at = models.DateTimeField()
     height = models.IntegerField(null=True, blank=True)
     width = models.IntegerField(null=True, blank=True)
-    is_validated = models.BooleanField(default=False)
+    is_validated = models.BooleanField(default=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
