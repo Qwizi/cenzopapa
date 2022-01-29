@@ -1,4 +1,6 @@
 name: remote ssh command
+on: workflow_dispatch
+
 on:
   push:
     branches:
