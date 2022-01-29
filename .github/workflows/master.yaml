@@ -1,19 +1,9 @@
 name: remote ssh command
-
-on: 
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tag'
-
 on:
   push:
     branches:
       - master
+
 jobs:
 
   build:
